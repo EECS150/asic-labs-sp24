@@ -1,9 +1,9 @@
-# EECS 151/251A ASIC Lab 0: Getting Around the Compute Environment
+# ASIC Lab 1: Getting Around the Compute Environment
 <p align="center">
 Prof. John Wawrzynek
 </p>
 <p align="center">
-TA (ASIC): Chengyi Lux Zhang
+TA (ASIC): Kevin
 </p>
 <p align="center">
 Department of Electrical Engineering and Computer Science
@@ -30,7 +30,7 @@ Once you login using your CalNet ID, you can click on 'Get a new account' in the
 
 ## Logging into the Classroom Servers
 
-The servers used for this class are primarily `eda-[1-12].eecs.berkeley.edu`.  You may also use the `c111-[1-17].eecs.berkeley.edu` machines (which are physically located in Cory 111/117). You can access all of these machines remotely through SSH. 
+The servers used for this class are primarily `eda-[1-12].eecs.berkeley.edu`.  You may also use the `c111-[1-17].eecs.berkeley.edu` machines (which are physically located in Cory 111/117). You can access all of these machines remotely through SSH.
 
 ### Remote Access
 
@@ -138,7 +138,7 @@ which innovus
 
 #### Question 1: Common terminal tasks
 
-For 1-6 below, submit the command/keystrokes needed to generate the desired result.  For 1-4, try generating only the desired result (no extraneous info). 
+For 1-6 below, submit the command/keystrokes needed to generate the desired result.  For 1-4, try generating only the desired result (no extraneous info).
 
 1. List the 5 most recently modified items in `/usr/bin`
 2. What directory is `git` installed in?
@@ -214,7 +214,7 @@ could be:
 sed -e 's/\(unit_cell_\)\([0-9]\{1\}\.\)/\10\2/' force_regs.ucli
 ```
 
-Both sed, vim, and grep use ”Basic Regular Expressions” by default. For regular expressions heavy with special characters, sometimes it makes more sense to assume most characters except `a-zA-Z0-9` have special meanings (and they get escaped with only to match them literally). This is called ”Extended Regular Expressions”, and `?+{}()` no longer need to be escaped. A great resource for learning more is http://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended. 
+Both sed, vim, and grep use ”Basic Regular Expressions” by default. For regular expressions heavy with special characters, sometimes it makes more sense to assume most characters except `a-zA-Z0-9` have special meanings (and they get escaped with only to match them literally). This is called ”Extended Regular Expressions”, and `?+{}()` no longer need to be escaped. A great resource for learning more is http://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended.
 
 In Vim, you can do this with `\v`:
 
@@ -408,7 +408,7 @@ This lab is the result of the work of many EECS151/251 GSIs over the years inclu
 Written By:
 - Nathan Narevsky (2014, 2017)
 - Brian Zimmer (2014)
-  
+
 Modified By:
 - John Wright (2015,2016)
 - Ali Moin (2018)
