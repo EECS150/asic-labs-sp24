@@ -1,9 +1,11 @@
-# ASIC Lab 1: Getting Around the Compute Environment
+<h1 style="text-align: center;">
+ASIC Lab 1: Setup and Getting Around the Compute Environment
+</h1>
 <p align="center">
 Prof. John Wawrzynek
 </p>
 <p align="center">
-TA (ASIC): Kevin
+TAs: (ordered by section) Kevin He, Kevin Anderson
 </p>
 <p align="center">
 Department of Electrical Engineering and Computer Science
@@ -11,6 +13,17 @@ Department of Electrical Engineering and Computer Science
 <p align="center">
 College of Engineering, University of California, Berkeley
 </p>
+
+## Table of contents
+1. [Overview](#Overview) 
+2. [Setup](#paragraph1)
+3. [Regular Expressions](#paragraph2)
+4. [File Permissions](#paragraph3)
+5. [Makefiles](#paragraph4) 
+6. [Diffing Files](#paragraph5)
+7. [Git](#paragraph6)
+8. [Conclusion](#paragraph7)
+9. [Lab Deliverables](#paragraph8)
 
 ## Overview
 
@@ -30,7 +43,7 @@ Once you login using your CalNet ID, you can click on 'Get a new account' in the
 
 ## Logging into the Classroom Servers
 
-The servers used for this class are primarily `eda-[1-12].eecs.berkeley.edu`.  You may also use the `c111-[1-17].eecs.berkeley.edu` machines (which are physically located in Cory 111/117). You can access all of these machines remotely through SSH.
+The servers used for this class are primarily `eda-[1-12].eecs.berkeley.edu`.  You may also use the `c111-[1-17].eecs.berkeley.edu` machines (which are physically located in Cory 111/117). You can access all of these machines remotely through SSH. 
 
 ### Remote Access
 
@@ -110,86 +123,29 @@ cd /home/tmp/<your-eecs-username>
 git clone /home/ff/eecs151/labs/lab0
 cd lab1
 ```
+## Setup <a name="paragraph1"></a>
+### Setting up your environment
 
-## Linux Basics
+Start by reading through and completing the steps in the [EECS 151 setup guide](../../../../common/setup/).
 
-You will need to learn how to use Linux so that you can understand what programs are running on the server, manipulate files, launch programs, and debug problems. Please read through the tutorial here: http://linuxcommand.org/lc3_learning_the_shell.php
+### Getting the lab files
 
-To use the CAD tools in this class, you will need to load the class environment. All of the tools are already installed on the network filesystem, but by default users do not have the tools in their path. Try locating a program that is already installed (vim) and another which is not (innovus) by default:
-
-```shell
-which vim
-which innovus
-```
-
-The vim program has been installed in: `/usr/bin/vim`. If you show the contents of `/usr/bin`, you will notice that you can launch any of programs by typing their filename. This is because `/usr/bin` is in the environment variable `$PATH`, which contains different directories to search in a colon-separated list.
+To start the lab, accept the ASIC Lab 1 GitHub classroom assignment.
+This will create a new GitHub repo for you.
+Clone the repo to your work directory.
 
 ```shell
-echo $PATH
+cd /home/tmp/<your-eecs-username>
+git clone <your-asic-lab-repo>
 ```
 
-To be able to access the CAD tools, you will need to append to their location to the `$PATH` variable:
+Then `cd` into the `lab1` folder in your cloned repository.
+Unless otherwise specified, the rest of the lab instructions will assume you are in the `lab1` directory.
 
-```shell
-source /home/ff/eecs151/asic/eecs151.bashrc
-echo $PATH
-which innovus
-```
+## Regular Expressions  <a name="paragraph2"></a>
+---
 
-#### Question 1: Common terminal tasks
-
-For 1-6 below, submit the command/keystrokes needed to generate the desired result.  For 1-4, try generating only the desired result (no extraneous info).
-
-1. List the 5 most recently modified items in `/usr/bin`
-2. What directory is `git` installed in?
-3. Show the hidden files in your lab directory (the one you cloned from `/home/ff/eecs151/labs/lab1`
-4. What version of Vim is installed? Describe how you figured this out.
-5. (optional) Make a new directory called `backup` within `/home/tmp/<your-eecs-username>`. Copy all the files in this lab directory to the new `backup` directory and then delete all the copies in the new directory.
-6. Run `ping www.google.com`, suspend it, then kill the process. Then run it in the background, report its PID, then kill the process.
-7. Run `top` and report the average CPU load, the highest CPU job, and the amount of memory used (just report the results for this question; you don't need to supply the command/how you got it).
-
-
-There are a few miscellaneous commands to analyze disk usage on the servers.
-
-```shell
-du -ch --max-depth=1 .
-df -H
-```
-
-Finally, your instructional accounts have disk usage quotas. Find out how much you are allocated
-and how much you are using:
-
-```shell
-quota -s
-```
-
-By default, you should be using the Bash shell (these labs are designed for Bash, not Csh). The Bash Guide (guide.bash.academy) is a great resource for users at all levels of Bash profiency.
-
-## Using Text Editors
-
-Much of the time you will spend designing chips will be writing scripts in a text editor. Therefore becoming proficient at editing text is a vital skill. Unlike Java or C programming, there is no integrated development environment (IDE) for writing these scripts. However, many of the advantages of IDE’s can be obtained by using the proper editor. In this course, you may use whatever editor you prefer, but just keep in mind that using some non-standard editors might hinder the instructor's capability of helping you.
-
-As an editor built-in to the instructional machine, vim is highly efficient and requires no additional installation to use, so we will take a closer look to it. If you have never used Vim, please follow the tutorial here: http://www.openvim.com/tutorial.html (If you would prefer to learn Emacs, you can read http://www.gnu.org/software/emacs/tour/ and run the Emacs built-in tutorial with Ctrl-h followed by t). Feel free to search for other resources online to learn more.
-
-#### Question 2: Common editor tasks
-
-For each task below, describe the keys you need to press to accomplish the action in the file `force_regs.ucli`.
-
-1. Delete 5 lines
-2. Search for the text `clock`
-3. Replace the text `dut` with `device_under_test`
-4. Jump to the end of the file
-5. Go to line 42
-6. Reload the file (in case it was modified in another window)
-7. Save and exit
-
-#### Alternative Editors
-
-While Vim is a powerful editor and ubiquitous on Linux environments, there are other alternatives that might be more suitable for different use cases. A modern graphical text editor is Visual Studio Code, which supports editing text files through an SSH session. As Visual Studio Code renders text on the client machine, it can be useful for students with high latency or irregular internet connections as in such environments X2Go or Vim in SSH can feel unresponsive. To set up Visual Studio Code for remote development, please follow the tutorial here: https://code.visualstudio.com/docs/remote/ssh-tutorial
-
-## Regular Expressions
-
-Regular expressions allow you to perform complex ’Search’ or ’Search and Replace’ operations. Please work through the tutorial here: http://regexone.com
+Regular expressions allow you to perform complex ’Search’ or ’Search and Replace’ operations. Please work through the tutorial [here](http://regexone.com).
 
 Regular expressions can be used from many different programs: Vim, Emacs, grep, sed, Python, etc. From the command line, use grep to search, and sed to search and replace.
 
@@ -214,7 +170,7 @@ could be:
 sed -e 's/\(unit_cell_\)\([0-9]\{1\}\.\)/\10\2/' force_regs.ucli
 ```
 
-Both sed, vim, and grep use ”Basic Regular Expressions” by default. For regular expressions heavy with special characters, sometimes it makes more sense to assume most characters except `a-zA-Z0-9` have special meanings (and they get escaped with only to match them literally). This is called ”Extended Regular Expressions”, and `?+{}()` no longer need to be escaped. A great resource for learning more is http://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended.
+Both sed, vim, and grep use ”Basic Regular Expressions” by default. For regular expressions heavy with special characters, sometimes it makes more sense to assume most characters except `a-zA-Z0-9` have special meanings (and they get escaped with only to match them literally). This is called ”Extended Regular Expressions”, and `?+{}()` no longer need to be escaped. A great resource for learning more is [Wikipedia](http://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended). 
 
 In Vim, you can do this with `\v`:
 
@@ -263,38 +219,13 @@ man sed
 
 [Bash redirections]: https://www.gnu.org/software/bash/manual/html_node/Redirections.html
 
-#### Question 3: Fun with Regular Expressions
+## File Permissions <a name="paragraph3"></a>
 
-For each regular expression, provide an answer for **both** **basic** and **extended** mode (`sed` and `sed -r`).
+A tutorial about file permissions can be found [here](http://www.tutorialspoint.com/unix/unix-file-permission.htm) and answer the questions.
 
-You are allowed to use multiple commands to perform each task. Operate on the `force_regs.ucli` file.
+## Makefiles <a name="paragraph4"></a>
 
-1. Change all x surrounding numbers to angle brackets. For example, `regx15xx79x` becomes `reg<15><79>`. Hint: remember to enable global subsitution.
-2. *(optional)* Make every number in the file be exactly 3 digits with padded leading zeros (except the last 0 on each line). Eg. line 120/121 should read:
-
-```
-force -deposit rocketTestHarness.dut.Raven003Top_withoutPads.TileWrap.
-... .io_tilelink_release_data.sync_w002r.rq002_wptr_regx000x.Q 0
-force -deposit rocketTestHarness.dut.Raven003Top_withoutPads.TileWrap.
-... .io_tilelink_release_data.fifomem.mem_regx015xx098x.Q 0
-```
-
-## File Permissions
-
-A tutorial about file permissions can be found here: http://www.tutorialspoint.com/unix/unix-file-permission.htm
-
-#### Question 4: Understanding File Permissions
-
-For each task below, please provide the commands that result in the correct permissions being set. Make no assumptions about the file's existing permissions. Operate on the `runalways.sh` script.
-
-1. Change the script to be executable by you and no one else.
-2. Add permissions for everyone in your group to be able to execute the same script
-3. Make the script writable by you ane everyone in your group, but unreadable by others
-4. *(optional)* Change the owner of the file to be `eecs151` (Note: you will not be able to execute this command, so just provide the command itself)
-
-## Using Makefiles
-
-Makefiles are a simple way to string together a bunch of different shell tasks in an intelligent manner. This allows someone to automate tasks and save time when doing repetitive tasks since make targets allow for only files that have changed to need to be updated. Please read through the following tutorial here: http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/ (optional). Further documentation on make can be found here: http://www.gnu.org/software/make/manual/make.html.
+Makefiles are a simple way to string together a bunch of different shell tasks in an intelligent manner. This allows someone to automate tasks and save time when doing repetitive tasks since make targets allow for only files that have changed to need to be updated. Please read through the tutorial [here](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/) (optional). Further documentation on make can be found [here](http://www.gnu.org/software/make/manual/make.html).
 
 Let’s look at a simple makefile to explain a few things about how they work - this is not meant to be anything more than a very brief overview of what a makefile is and how it works. If you look at the Makefile in the provided folder in your favorite text editor, you can see the following lines:
 
@@ -332,12 +263,7 @@ Inside the output name target, the `awk` command has a bunch of \$ characters. T
 
 The other characters after the awk script are also special characters to make. The `$<` is the first dependency of that target, the `>` simply redirects the output of awk, and the `$@` is the name of the target itself. This allows users to create makefiles that can be reusable, since you are operating on a dependency and outputting the result into the name of your own target.
 
-#### Question 5: Makefile Targets
-
-1. Add a new make rule that will create a file called `foo.txt`.  Make it also run the `output_name` rule.
-2. Name at least two ways that you could have the makefile regenerate the `output_name` target after its rule has been run.
-
-## Comparing Files
+## Diffing Files <a name="paragraph5"></a>
 
 Comparing text files is another useful skill. The tools generally behave as black boxes, so comparing output files to prior output files is an important debugging technique.
 
@@ -355,19 +281,13 @@ For Vim users, there is a useful built-in `diff` tool:
 vimdiff force_regs.ucli force_regs.random.ucli
 ```
 
-## Version Control with Git
+## Git <a name="paragraph6"></a>
 
-Version control systems help track how files change overtime and make it easier for collaborators to work on the same files and share their changes. We use git to distribute the lab files so that bug fixes can easily be incorporated into your files. Please go through the following tutorial: https://try.github.io
+Build your familiarity with Git by answering [Question 6](### Questions)
 
-#### Question 6: Checking Git Understanding
+## Conclusion <a name="paragraph7"></a>
 
-Submit the command required to perform the following tasks:
-
-1. What is the difference between your current Makefile and the file you started with?
-2. How do you make a new branch?
-3. *(optional)* What is the SHA of the version you checked out?
-
-## Customization
+### Customization
 
 Many of the commands and tools you will use on a daily basis can be customized. This can dramatically improve your productivity. Some tools (e.g. vim and bash) are customized using “dotfiles,” which are hidden files in your home directory (e.g. `.bashrc` and `.vimrc`) that contain a series of commands which set variables, create aliases, or change settings. Try adding the following lines to your `.bashrc` and restart your session or source `~/.bashrc`. Now when you change directories, you no longer need to type `ls` to show the directory contents.
 
@@ -378,37 +298,92 @@ function cd {
 ```
 
 The following links are useful for learning how to make some common customizations. You can read these but are not required to turn in anything for this section.
-* https://www.digitalocean.com/community/tutorials/an-introduction-to-useful-bash-aliases-and-functions
-* http://statico.github.io/vim.html
+* [Bash aliases and functions](https://www.digitalocean.com/community/tutorials/an-introduction-to-useful-bash-aliases-and-functions)
+* [Vim](http://statico.github.io/vim.html)
 
 
-## Lab Deliverables
+## Lab Deliverables  <a name="paragraph8"></a>
 
-### Lab Due: 11:59 PM, Monday January 30th, 2023
+### Questions
 
-- Submit a written report with all 6 questions answered to Gradescope
+Submit your answers to the lab questions on Gradescope, then ask your lab TA to check you off.
+#### Question 1: Setup
+1. Show the output of running `ssh -T git@github.com` on the lab machines.
+2. What is your instructional account's disk quota (to the nearest GB)? Do files in your temporary directory count against your quota?
+3. What text editor are you using?
+4. Which instructional machine(s) should you use while completing the labs and the project?
+
+#### Question 2: Common terminal tasks
+
+For 1-6 below, submit the command/keystrokes needed to generate the desired result.  For 1-4, try generating only the desired result (no extraneous info). 
+
+1. List the 5 most recently modified items in `/usr/bin`
+2. What directory is `git` installed in?
+3. Show the hidden files in your lab directory (the `lab1` folder in the repo you cloned from GitHub).
+4. What version of Vim is installed? Describe how you figured this out.
+5. (optional) Make a new directory called `backup` within `/home/tmp/<your-eecs-username>`. Copy all the files in this lab directory to the new `backup` directory and then delete all the copies in the new directory.
+6. Run `ping www.google.com`, suspend it, then kill the process. Then run it in the background, report its PID, then kill the process.
+7. Run `top` and report the average CPU load, the highest CPU job, and the amount of memory used (just report the results for this question; you don't need to supply the command/how you got it).
+
+#### Question 3: Fun with Regular Expressions
+
+For each regular expression, provide an answer for **both** **basic** and **extended** mode (`sed` and `sed -r`).
+
+You are allowed to use multiple commands to perform each task. Operate on the `force_regs.ucli` file.
+
+1. Change all x surrounding numbers to angle brackets. For example, `regx15xx79x` becomes `reg<15><79>`. Hint: remember to enable global subsitution.
+2. *(optional)* Make every number in the file be exactly 3 digits with padded leading zeros (except the last 0 on each line). Eg. line 120/121 should read:
+
+```
+force -deposit rocketTestHarness.dut.Raven003Top_withoutPads.TileWrap.
+... .io_tilelink_release_data.sync_w002r.rq002_wptr_regx000x.Q 0
+force -deposit rocketTestHarness.dut.Raven003Top_withoutPads.TileWrap.
+... .io_tilelink_release_data.fifomem.mem_regx015xx098x.Q 0
+```
+#### Question 4: Understanding File Permissions
+
+For each task below, please provide the commands that result in the correct permissions being set. Make no assumptions about the file's existing permissions. Operate on the `runalways.sh` script.
+
+1. Change the script to be executable by you and no one else.
+2. Add permissions for everyone in your group to be able to execute the same script
+3. Make the script writable by you ane everyone in your group, but unreadable by others
+4. *(optional)* Change the owner of the file to be `eecs151` (Note: you will not be able to execute this command, so just provide the command itself)
+
+#### Question 5: Makefile Targets
+
+1. Add a new make rule that will create a file called `foo.txt`.  Make it also run the `output_name` rule.
+2. Name at least two ways that you could have the makefile regenerate the `output_name` target after its rule has been run.
+
+#### Question 6: Checking Git Understanding
+
+Submit the **command** required to perform the following tasks:
+
+1. How do you diff the Makefile versus its state as of the previous commit, if you have **not** staged the Makefile?
+1. How do you diff the Makefile versus its state as of the previous commit, if you **have** staged the Makefile?
+1. How do you make a new branch without switching to it?
+1. How do you switch to a new branch?
 
 ## Appendix
-
+---
 ### Cheatsheets
 That was a lot of commands and a lot of new things to memorize (especially if you have not used them extensively in the past)! As a result, these are some cheatsheets that contains the key commands of some of the productivity tools we went through. *These are all the top results of searching "xx cheatsheet" in google, and are **not** created by the staff.*
 
-* **Linux Commands**: https://www.guru99.com/linux-commands-cheat-sheet.html
-* **Vim**: https://vim.rtorr.com/
-* **Emacs**: https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf
-* **Regex**: https://cheatography.com/davechild/cheat-sheets/regular-expressions/
-* **Make**: https://gist.github.com/rueycheng/42e355d1480fd7a33ee81c866c7fdf78
-* **Git**: https://education.github.com/git-cheat-sheet-education.pdf
-* **Screen**: https://gist.github.com/jctosta/af918e1618682638aa82
-* **Tmux**: https://tmuxcheatsheet.com/
+* [Linux Commands](https://www.guru99.com/linux-commands-cheat-sheet.html)
+* [Vim](https://vim.rtorr.com/)
+* [Emacs](https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf)
+* [Regex](https://cheatography.com/davechild/cheat-sheets/regular-expressions/)
+* [Make](https://gist.github.com/rueycheng/42e355d1480fd7a33ee81c866c7fdf78)
+* [Git](https://education.github.com/git-cheat-sheet-education.pdf)
+* [Screen](https://gist.github.com/jctosta/af918e1618682638aa82)
+* [Tmux](https://tmuxcheatsheet.com/)
 
 ## Acknowledgement
-
+---
 This lab is the result of the work of many EECS151/251 GSIs over the years including:
 Written By:
 - Nathan Narevsky (2014, 2017)
 - Brian Zimmer (2014)
-
+  
 Modified By:
 - John Wright (2015,2016)
 - Ali Moin (2018)
@@ -419,5 +394,9 @@ Modified By:
 - Sean Huang (2021)
 - Daniel Grubb, Nayiri Krzysztofowicz, Zhaokai Liu (2021)
 - Dima Nikiforov (2022)
-- Roger Hsiao, Hansung Kim (2022)
+- Erik Anderson, Roger Hsiao, Hansung Kim, Richard Yan (2022)
 - Chengyi Zhang (2023)
+- Rahul Kumar, Rohan Kumar (2023)
+- Kevin Anderson, Kevin He (Sp2024)
+
+
