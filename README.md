@@ -1,2 +1,2 @@
 # asic-labs-sp23
-Lab specs for asic-labs-sp23 is organized here!
+Lab exercises (specifications) for Spring 2024 ASIC labs.
