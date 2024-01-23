@@ -27,13 +27,27 @@ College of Engineering, University of California, Berkeley
 
 ## Overview
 
+In course labs you will be introduced to Very-Large Scale Integration (VLSI) design.
 The process of VLSI design is different than developing software, designing analog circuits, and even FPGA-based design. Instead of using a single graphical user interface (GUI) or environment (eg. Eclipse, Cadence Virtuoso, or Xilinx Vivado), VLSI design is done using dozens of command line interface tools on a Linux machine.  These tools primarily use text files as their inputs and outputs, and include GUIs mainly for only visualization, rather than design.  Therefore, familiarity with Linux, text manipulation, and scripting is required to successfully complete the labs this semester.
 
-The goal of this lab is to introduce some basic techniques needed to use the computer aided design (CAD) tools that are taught in this class. Mastering the topics in this lab will help you save hours of time in later labs and make you a much more efficient chip designer. While you go through this lab, focus on how these techniques will allow you to automate tasks and improve your efficiency. Chip design requires plenty of iteration, so being able to perform trials and identify errors quickly is key to success.
+**Objective:** 
+The goal of this lab is to introduce some basic techniques needed to use the computer aided design (CAD) tools that are taught in this class. Mastering the topics in this lab will help you save hours of time in later labs and make you a much more efficient chip designer.
+
+- Setup Instructional Account
+- Building familarity with Git
+- Learn Linux Basics
+
+ <!-- While you go through this lab, focus on how these techniques will allow you to automate tasks and improve your efficiency. Chip design requires plenty of iteration, so being able to perform trials and identify errors quickly is key to success. -->
+
+<!-- ### Tools:
+- Cadence Genus
+- Cadence Innovus -->
+
+### Submission
+1.  Solutions for lab [questions](#paragraph8) will be submitted in electronically using **Gradescope**. 
+2. Labs requiring check-offs must be done in person with a lab TA.
 
 ## Administrative Info
-
-This lab, like all the labs in this course, will be turned in electronically using Gradescope. Please upload a pdf document with the answers to the six questions in the lab.
 
 ### Getting an Instructional Account
 
@@ -41,28 +55,26 @@ You are required to get an EECS instructional account to login to the workstatio
 
 Once you login using your CalNet ID, you can click on 'Get a new account' in the eecs151 row. Once the account has been created, you can email your class account form to yourself to have a record of your account information.  You can follow the instructions on the emailed form to change your Linux password with `ssh update.eecs.berkeley.edu` and following the prompts.
 
-## Logging into the Classroom Servers
+
+## Setup <a name="paragraph1"></a>
+
+### Logging into the Classroom Servers
 
 The servers used for this class are primarily `eda-[1-12].eecs.berkeley.edu`.  You may also use the `c111-[1-17].eecs.berkeley.edu` machines (which are physically located in Cory 111/117). You can access all of these machines remotely through SSH. 
 
-### Remote Access
 
-It is important that you can remotely access the instructional servers. There are two convenient ways to remotely access our lab machines: SSH (Secure SHell) and X2Go.
+#### SSH: 
 
-First, select a machine. The range of accessible machines are `eda-X`, where X is a number from 1 to 12, and `c111-X`, where X is a number from 1 to 17. The fully qualified DNS name (FQDN) of your machine is then `eda-X.eecs.berkeley.edu` or `c111-X.eecs.berkeley.edu`. For example, if you select machine `eda-8`, the FQDN would be `eda-8.eecs.berkeley.edu`.
+SSH is the de facto remote terminal tool for Linux and BSD systems (which includes macOS). It lets you login to a text console from anywhere (as long as you have network connectivity). SSH also comes as a standard utility in almost all Linux and BSD systems.The SSH protocol also enables file transfer between your local and lab machines via the `sftp` and `scp` utilities. **WARNING: please only transfer files needed for your reports and nothing else, particularly files relating to CAD tool commnads or process technologies!!!**
 
-You can use any lab machine, but our lab machines aren’t very powerful; if everyone uses the same one, everyone will find that their jobs perform poorly. ASIC design tools are resource intensive and will not run well when there are too many simultaneous users on these machines. We recommend that every time you want to log into a machine, examine its load on https://hivemind.eecs.berkeley.edu/ for the `eda-X` machines, or using `top` when you log in. If it is heavily loaded, consider using a different machine. If you also notice other `eecs151` users with jobs consuming excessive resources, do feel free to reach out to the GSIs about it.
+How To:
+<ul style="list-style: none;">
+ <li>
+<details>
+<summary>Linux, BSD, MacOS</summary>
+<br>
 
-Next, note your instructional class acccount name - the one that looks like `eecs151-YYY`, for example `eecs151-abc`. This is the account you created at the start of this lab.
-
-#### VPN
-If you're not using eduroam, you need to use a global protect VPN to get over the instructional machine's firewall. You can follow the guide here on: https://software.berkeley.edu/bsecure-remote-access-vpn
-
-#### SSH: Linux, BSD, MacOS
-
-SSH is the de facto remote terminal tool for Linux and BSD systems (which includes macOS). It lets you login to a text console from anywhere (as long as you have network connectivity). SSH also comes as a standard utility in almost all Linux and BSD systems.
-
-If you’re using Linux or BSD, you should be able to access your workstation through SSH by running:
+Access your workstation through SSH by running:
 
 ```shell
 ssh eecs151-YYY@eda-X.eecs.berkeley.edu
@@ -73,33 +85,35 @@ In our examples, this would be:
 ```shell
 ssh eecs151-abc@eda-8.eecs.berkeley.edu
 ```
-
-The SSH protocol also enables file transfer between your local and lab machines via the `sftp` and `scp` utilities. **WARNING: please only transfer files needed for your reports and nothing else, particularly files relating to CAD tool commnads or process technologies!!!**
-
-
-#### SSH: Windows
-
+</details>
+</li>
+ <li>
+<details>
+<summary>Windows</summary>
+<br>
 The classic and most lightweight way to use SSH on Windows is PuTTY (https://www.putty.org/). Download it and login with the FQDN above as the Host and your instructional account username. You can also use WinSCP (winscp.net) for file transfer over SSH.
 
 Advanced users may wish to install Windows Subsystem for Linux (https://docs.microsoft.com/en-us/windows/wsl/install-win10, Windows 10 build 16215 or later) or Cygwin (cygwin.com) and use SSH, SFTP, and SCP through there.
 
+</details>
+</li>
+</ul>
 
-#### SSH Session Management
 
-Because all your work will be done remotely, we recommend that you utilize SSH session management tools and that all terminal-based work be done over SSH. This would allow your remote terminal sessions to remain active even if your SSH session disconnects, intentionally or not. The two most common session managers are tmux and screen. These run persistently on the remote workstation, are highly customizable, and can greatly improve your productivity.
+It is ***highly*** recommended to utilize one of the following SSH session management tools: `tmux` or `screen`. This would allow your remote terminal sessions to remain active even if your SSH session disconnects, intentionally or not.
 
 Here are some good `tmux` and `screen` tutorials:
-* https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/
-* https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/
+* [Tmux Tutorial](https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
+* [Screen Tutorial](https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/)
 
 
 #### X2Go
 
-For situations in which you need a graphical interface (waveform debugging, layout viewing, etc.), you should use X2Go. This is a faster and more reliable alternative to more traditional XForwarding over SSH. X2Go is also recommended because it connects to a persistent graphical desktop environment, which continues running even if your internet connection drops.
+For situations in which you need a graphical interface (waveform debugging, layout viewing, etc.) use X2Go. This is a faster and more reliable alternative to more traditional XForwarding over SSH. X2Go is also recommended because it connects to a persistent graphical desktop environment, which continues running even if your internet connection drops.
 
 Download the X2Go client for your platform from the website: https://wiki.x2go.org/doku.php/download:start.
 
-Note: MacOS sometimes blocks the X2Go download/install, if it does follow the directions here: https://support.apple.com/en-us/HT202491.
+> **_NOTE:_**  MacOS sometimes blocks the X2Go download/install, if it does follow the directions here: https://support.apple.com/en-us/HT202491.
 
 To use X2Go, you need to create a new session (look under the Session menu). Give the session any name, it doesn’t matter, but set the Host field to the FQDN of your lab machine and the User field to your instructional account username. For “Session type”, select “GNOME”. Here’s an example from macOS:
 
@@ -107,30 +121,48 @@ To use X2Go, you need to create a new session (look under the Session menu). Giv
 <img src="./figs/x2gomacos.png" width="500" />
 </p>
 
+### Remote Access
+
+It is important that you can remotely access the instructional servers. Remote into server using either SSH (Secure SHell) or X2Go. The range of accessible machines are `eda-[1-12]` and `c111-[1-17]`. The fully qualified DNS name (FQDN) is `eda-X.eecs.berkeley.edu` or `c111-X.eecs.berkeley.edu`. For example, if you select machine `eda-8`, the FQDN would be `eda-8.eecs.berkeley.edu`.
+
+Next, note your instructional class acccount name - the one that looks like `eecs151-YYY`, for example `eecs151-abc`. This is the account you created at the start of this lab.
+
+
+
+
+#### VPN
+If you're not on campus connected to *eduroam*, you need to use a global protect VPN to get over the instructional machine's firewall. Follow this guide to install the VPN: https://software.berkeley.edu/bsecure-remote-access-vpn
+
+
+
+> **_NOTE:_** You can use any lab machine, but our lab machines aren’t very powerful; if everyone uses the same one, everyone will find that their jobs perform poorly. ASIC design tools are resource intensive and will not run well when there are too many simultaneous users on these machines. We recommend that every time you want to log into a machine, examine its load on https://hivemind.eecs.berkeley.edu/ for the `eda-X` machines, or using `top` when you log in. If it is heavily loaded, consider using a different machine. If you also notice other `eecs151` users with jobs consuming excessive resources, do feel free to reach out to the GSIs about it.
+
 
 ### Getting Started
+Before you begin exercises, you need to create a directory for your work. Your `/home` directory has limited space you will create a personal subdirectory underneath `/home/tmp/<your-eecs-username>` for all development work (copy any important results to your home directory). 
 
-After you login to one of these servers, you are now ready to start the lab.  You have a limited amount of space in your home directory, so we recommend completing work in the `/home/tmp` directory, and then copying any important results to your home directory. Your personal workspace, `/home/tmp/<your-eecs-username>` can be created by logging into the EECS Instructional WebAccount (http://inst.eecs.berkeley.edu/webacct) with your CalNet ID. Click on `More...`, then select `Make /home/tmp Directory`
+Steps: 
+1. Log into the EECS Instructional WebAccount (http://inst.eecs.berkeley.edu/webacct) with your CalNet ID. 
+2. Click on "*More...* 
+3. then select "*Make /home/tmp Directory*"
 
 <p align="center">
 <img src="./figs/make_home_tmp_dir.png" width="400" />
 </p>
 
-To begin, get the lab files by typing the following commands:
 
-```shell
-cd /home/tmp/<your-eecs-username>
-git clone /home/ff/eecs151/labs/lab0
-cd lab1
-```
-## Setup <a name="paragraph1"></a>
-### Setting up your environment
 
-Start by reading through and completing the steps in the [EECS 151 setup guide](../../../../common/setup/).
+<!-- ### Setting up your environment
 
-### Getting the lab files
+Start by reading through and completing the steps in the [EECS 151 setup guide](../../../../common/setup/). -->
 
-To start the lab, accept the ASIC Lab 1 GitHub classroom assignment.
+## Getting the lab files
+
+You are now ready to complete the lab exercises! In this course, we use GitHub Classroom to manage labs and the project. 
+<p align="center" style="font-size:2em">
+<a href="https://classroom.github.com/a/5WvvqY9q" > Accept GitHub Classroom Invitation </a>
+</p>
+
 This will create a new GitHub repo for you.
 Clone the repo to your work directory.
 
@@ -139,15 +171,14 @@ cd /home/tmp/<your-eecs-username>
 git clone <your-asic-lab-repo>
 ```
 
-Then `cd` into the `lab1` folder in your cloned repository.
-Unless otherwise specified, the rest of the lab instructions will assume you are in the `lab1` directory.
+This repository the lab manual (README.md) and all skeleton code in the *skel* directory. Following labs will be similar.
+
 
 ## Regular Expressions  <a name="paragraph2"></a>
----
 
-Regular expressions allow you to perform complex ’Search’ or ’Search and Replace’ operations. Please work through the tutorial [here](http://regexone.com).
+Regular expressions allow you to perform complex ’Search’ or ’Search and Replace’ operations. **Please work through the tutorial [here](http://regexone.com)**.
 
-Regular expressions can be used from many different programs: Vim, Emacs, grep, sed, Python, etc. From the command line, use grep to search, and sed to search and replace.
+Regular expressions can be used from many different programs: Vim, Emacs, `grep`, `sed`, Python, etc. From the command line, use `grep` to search, and `sed` to search and replace.
 
 Unfortunately, deciding what characters needs to be escaped can be somewhat confusing. For example, to find all instances of `dcdc_unit_cell_x`, where `x` is a single digit number, using grep:
 
@@ -170,7 +201,7 @@ could be:
 sed -e 's/\(unit_cell_\)\([0-9]\{1\}\.\)/\10\2/' force_regs.ucli
 ```
 
-Both sed, vim, and grep use ”Basic Regular Expressions” by default. For regular expressions heavy with special characters, sometimes it makes more sense to assume most characters except `a-zA-Z0-9` have special meanings (and they get escaped with only to match them literally). This is called ”Extended Regular Expressions”, and `?+{}()` no longer need to be escaped. A great resource for learning more is [Wikipedia](http://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended). 
+Both `sed`, vim, and `grep` use ”Basic Regular Expressions” by default. For regular expressions heavy with special characters, sometimes it makes more sense to assume most characters except `a-zA-Z0-9` have special meanings (and they get escaped with only to match them literally). This is called ”Extended Regular Expressions”, and `?+{}()` no longer need to be escaped. A great resource for learning more is [Wikipedia](http://en.wikipedia.org/wiki/Regular_expression#POSIX_basic_and_extended). 
 
 In Vim, you can do this with `\v`:
 
@@ -221,7 +252,7 @@ man sed
 
 ## File Permissions <a name="paragraph3"></a>
 
-A tutorial about file permissions can be found [here](http://www.tutorialspoint.com/unix/unix-file-permission.htm) and answer the questions.
+A tutorial about file permissions can be found [here](http://www.tutorialspoint.com/unix/unix-file-permission.htm) and answer the [questions](#Questions).
 
 ## Makefiles <a name="paragraph4"></a>
 
@@ -265,17 +296,13 @@ The other characters after the awk script are also special characters to make. T
 
 ## Diffing Files <a name="paragraph5"></a>
 
-Comparing text files is another useful skill. The tools generally behave as black boxes, so comparing output files to prior output files is an important debugging technique.
-
-From the command lines, you can use `diff` to compare files:
+Comparing text files is another useful skill. The tools generally behave as black boxes, so comparing output files to prior output files is an important debugging technique. From the command lines, you can use `diff` to compare files:
 
 ```shell
 diff force_regs.ucli force_regs.random.ucli
 ```
 
-You can also compare the contents of directories (the `-q` flag will summarize the results to only show the names of the files that differ, and the `-r` flag will recurse through subdirectories).
-
-For Vim users, there is a useful built-in `diff` tool:
+You can also compare the contents of directories (the `-q` flag will summarize the results to only show the names of the files that differ, and the `-r` flag will recurse through subdirectories). For Vim users, there is a useful built-in `diff` tool:
 
 ```shell
 vimdiff force_regs.ucli force_regs.random.ucli
@@ -283,7 +310,7 @@ vimdiff force_regs.ucli force_regs.random.ucli
 
 ## Git <a name="paragraph6"></a>
 
-Build your familiarity with Git by answering [Question 6](### Questions)
+Build your familiarity with Git by answering [Question 6](#paragraph8)
 
 ## Conclusion <a name="paragraph7"></a>
 
