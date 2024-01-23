@@ -132,6 +132,31 @@ You are now ready to complete the lab exercises! In this course, we use GitHub C
 <a href="https://classroom.github.com/a/5WvvqY9q" > Accept GitHub Classroom Invitation </a>
 </p>
 
+### SSH Keys
+We will use SSH keys to authenticate with Github.
+Run these commands when logged in on your `eecs151-xxx` account.
+
+- Create a new SSH key:
+```shell
+ssh-keygen -t ed25519 -C "your_email@berkeley.edu"
+```
+Keep hitting enter to use the default settings.
+You can set up a passphrase if you want, then you'll need to type it whenever you ssh using public key.
+
+- Copy your public key:
+```
+cat ~/.ssh/id_ed25519.pub
+```
+Copy the text that's printed out.
+
+- Add the key to your Github account. [Go here](https://github.com/settings/keys), click on "New SSH Key", paste your public key, and click "Add SSH key".
+
+- Finally test your SSH connection
+```shell
+ssh -T git@github.com
+Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
 Clone the repo to your work directory.
 
 ```shell
