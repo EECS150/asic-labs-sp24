@@ -14,8 +14,34 @@ Department of Electrical Engineering and Computer Science
 College of Engineering, University of California, Berkeley
 </p>
 
+
+
 ## Table of contents
-1. [Overview](#Overview) 
+- [Table of contents](#table-of-contents)
+- [Overview](#overview)
+  - [Submission](#submission)
+- [Setup](#setup)
+- [Regular Expressions  ](#regular-expressions--)
+- [File Permissions ](#file-permissions-)
+- [Makefiles ](#makefiles-)
+- [Diffing Files ](#diffing-files-)
+- [Git ](#git-)
+- [Conclusion ](#conclusion-)
+  - [Customization](#customization)
+- [Lab Deliverables  ](#lab-deliverables--)
+  - [Questions](#questions)
+    - [Question 1: Setup](#question-1-setup)
+    - [Question 2: Common terminal tasks](#question-2-common-terminal-tasks)
+    - [Question 3: Fun with Regular Expressions](#question-3-fun-with-regular-expressions)
+    - [Question 4: Understanding File Permissions](#question-4-understanding-file-permissions)
+    - [Question 5: Makefile Targets](#question-5-makefile-targets)
+    - [Question 6: Checking Git Understanding](#question-6-checking-git-understanding)
+- [Appendix](#appendix)
+  - [Cheatsheets](#cheatsheets)
+- [Acknowledgement](#acknowledgement)
+
+
+<!-- 1. [Overview](#Overview) 
 2. [Setup](#paragraph1)
 3. [Regular Expressions](#paragraph2)
 4. [File Permissions](#paragraph3)
@@ -23,7 +49,7 @@ College of Engineering, University of California, Berkeley
 6. [Diffing Files](#paragraph5)
 7. [Git](#paragraph6)
 8. [Conclusion](#paragraph7)
-9. [Lab Deliverables](#paragraph8)
+9. [Lab Deliverables](#paragraph8) -->
 
 ## Overview
 
@@ -34,153 +60,32 @@ The process of VLSI design is different than developing software, designing anal
 The goal of this lab is to introduce some basic techniques needed to use the computer aided design (CAD) tools that are taught in this class. Mastering the topics in this lab will help you save hours of time in later labs and make you a much more efficient chip designer.
 
 - Setup Instructional Account
+- Successfully remote into lab machines
+- Install X2Go
 - Building familarity with Git
 - Learn Linux Basics
 
- <!-- While you go through this lab, focus on how these techniques will allow you to automate tasks and improve your efficiency. Chip design requires plenty of iteration, so being able to perform trials and identify errors quickly is key to success. -->
 
 <!-- ### Tools:
 - Cadence Genus
 - Cadence Innovus -->
 
 ### Submission
-1.  Solutions for lab [questions](#paragraph8) will be submitted in electronically using **Gradescope**. 
-2. Labs requiring check-offs must be done in person with a lab TA.
+1.  Solutions for lab [questions](#paragraph8) will be submitted electronically using **Gradescope**. 
+2. In person check-off by lab TA (can be done anytime before next lab)
 
-## Administrative Info
+## Setup
 
-### Getting an Instructional Account
-
-You are required to get an EECS instructional account to login to the workstations in the lab, since you will be doing all your work on these machines (whether you're working remotely or in-person). This can be done by using WebAcct here: http://inst.eecs.berkeley.edu/webacct.
-
-Once you login using your CalNet ID, you can click on 'Get a new account' in the eecs151 row. Once the account has been created, you can email your class account form to yourself to have a record of your account information.  You can follow the instructions on the emailed form to change your Linux password with `ssh update.eecs.berkeley.edu` and following the prompts.
-
-
-## Setup <a name="paragraph1"></a>
-
-### Logging into the Classroom Servers
-
-The servers used for this class are primarily `eda-[1-12].eecs.berkeley.edu`.  You may also use the `c111-[1-17].eecs.berkeley.edu` machines (which are physically located in Cory 111/117). You can access all of these machines remotely through SSH. 
-
-
-#### SSH: 
-
-SSH is the de facto remote terminal tool for Linux and BSD systems (which includes macOS). It lets you login to a text console from anywhere (as long as you have network connectivity). SSH also comes as a standard utility in almost all Linux and BSD systems.The SSH protocol also enables file transfer between your local and lab machines via the `sftp` and `scp` utilities. **WARNING: please only transfer files needed for your reports and nothing else, particularly files relating to CAD tool commnads or process technologies!!!**
-
-How To:
-<ul style="list-style: none;">
- <li>
-<details>
-<summary>Linux, BSD, MacOS</summary>
-<br>
-
-Access your workstation through SSH by running:
-
-```shell
-ssh eecs151-YYY@eda-X.eecs.berkeley.edu
-```
-
-In our examples, this would be:
-
-```shell
-ssh eecs151-abc@eda-8.eecs.berkeley.edu
-```
-</details>
-</li>
- <li>
-<details>
-<summary>Windows</summary>
-<br>
-The classic and most lightweight way to use SSH on Windows is PuTTY (https://www.putty.org/). Download it and login with the FQDN above as the Host and your instructional account username. You can also use WinSCP (winscp.net) for file transfer over SSH.
-
-Advanced users may wish to install Windows Subsystem for Linux (https://docs.microsoft.com/en-us/windows/wsl/install-win10, Windows 10 build 16215 or later) or Cygwin (cygwin.com) and use SSH, SFTP, and SCP through there.
-
-</details>
-</li>
-</ul>
-
-
-It is ***highly*** recommended to utilize one of the following SSH session management tools: `tmux` or `screen`. This would allow your remote terminal sessions to remain active even if your SSH session disconnects, intentionally or not.
-
-Here are some good `tmux` and `screen` tutorials:
-* [Tmux Tutorial](https://www.hamvocke.com/blog/a-quick-and-easy-guide-to-tmux/)
-* [Screen Tutorial](https://www.rackaid.com/blog/linux-screen-tutorial-and-how-to/)
-
-
-#### X2Go
-
-For situations in which you need a graphical interface (waveform debugging, layout viewing, etc.) use X2Go. This is a faster and more reliable alternative to more traditional XForwarding over SSH. X2Go is also recommended because it connects to a persistent graphical desktop environment, which continues running even if your internet connection drops.
-
-Download the X2Go client for your platform from the website: https://wiki.x2go.org/doku.php/download:start.
-
-> **_NOTE:_**  MacOS sometimes blocks the X2Go download/install, if it does follow the directions here: https://support.apple.com/en-us/HT202491.
-
-To use X2Go, you need to create a new session (look under the Session menu). Give the session any name, it doesn’t matter, but set the Host field to the FQDN of your lab machine and the User field to your instructional account username. For “Session type”, select “GNOME”. Here’s an example from macOS:
-
-<p align="center">
-<img src="./figs/x2gomacos.png" width="500" />
-</p>
-
-### Remote Access
-
-It is important that you can remotely access the instructional servers. Remote into server using either SSH (Secure SHell) or X2Go. The range of accessible machines are `eda-[1-12]` and `c111-[1-17]`. The fully qualified DNS name (FQDN) is `eda-X.eecs.berkeley.edu` or `c111-X.eecs.berkeley.edu`. For example, if you select machine `eda-8`, the FQDN would be `eda-8.eecs.berkeley.edu`.
-
-Next, note your instructional class acccount name - the one that looks like `eecs151-YYY`, for example `eecs151-abc`. This is the account you created at the start of this lab.
-
-
-
-
-#### VPN
-If you're not on campus connected to *eduroam*, you need to use a global protect VPN to get over the instructional machine's firewall. Follow this guide to install the VPN: https://software.berkeley.edu/bsecure-remote-access-vpn
-
-
-
-> **_NOTE:_** You can use any lab machine, but our lab machines aren’t very powerful; if everyone uses the same one, everyone will find that their jobs perform poorly. ASIC design tools are resource intensive and will not run well when there are too many simultaneous users on these machines. We recommend that every time you want to log into a machine, examine its load on https://hivemind.eecs.berkeley.edu/ for the `eda-X` machines, or using `top` when you log in. If it is heavily loaded, consider using a different machine. If you also notice other `eecs151` users with jobs consuming excessive resources, do feel free to reach out to the GSIs about it.
-
-
-### Getting Started
-Before you begin exercises, you need to create a directory for your work. Your `/home` directory has limited space you will create a personal subdirectory underneath `/home/tmp/<your-eecs-username>` for all development work (copy any important results to your home directory). 
-
-Steps: 
-1. Log into the EECS Instructional WebAccount (http://inst.eecs.berkeley.edu/webacct) with your CalNet ID. 
-2. Click on "*More...* 
-3. then select "*Make /home/tmp Directory*"
-
-<p align="center">
-<img src="./figs/make_home_tmp_dir.png" width="400" />
-</p>
-
-
-
-<!-- ### Setting up your environment
-
-Start by reading through and completing the steps in the [EECS 151 setup guide](../../../../common/setup/). -->
-
-## Getting the lab files
-
-You are now ready to complete the lab exercises! In this course, we use GitHub Classroom to manage labs and the project. 
-<p align="center" style="font-size:2em">
-<a href="https://classroom.github.com/a/5WvvqY9q" > Accept GitHub Classroom Invitation </a>
-</p>
-
-This will create a new GitHub repo for you.
-Clone the repo to your work directory.
-
-```shell
-cd /home/tmp/<your-eecs-username>
-git clone <your-asic-lab-repo>
-```
-
-This repository the lab manual (README.md) and all skeleton code in the *skel* directory. Following labs will be similar.
+The first step for this lab is to setup your environment. ***If you have not performed the steps in the [Setup](./README.md) section of the README.md for the repo, please go follow those instructions to get setup.*** Afterward, please [Clone this Repo](./README.md).
 
 
 ## Regular Expressions  <a name="paragraph2"></a>
 
-Regular expressions allow you to perform complex ’Search’ or ’Search and Replace’ operations. **Please work through the tutorial [here](http://regexone.com)**.
+Regular expressions allow you to perform complex ’Search’ or ’Search and Replace’ operations. 
 
-Regular expressions can be used from many different programs: Vim, Emacs, `grep`, `sed`, Python, etc. From the command line, use `grep` to search, and `sed` to search and replace.
+> **TASK:** Please work through this  [tutorial](http://regexone.com).
 
-Unfortunately, deciding what characters needs to be escaped can be somewhat confusing. For example, to find all instances of `dcdc_unit_cell_x`, where `x` is a single digit number, using grep:
+Regular expressions can be used from many different programs: Vim, Emacs, `grep`, `sed`, Python, etc. From the command line, use `grep` to search, and `sed` to search and replace. Unfortunately, deciding what characters needs to be escaped can be somewhat confusing. For example, to find all instances of `dcdc_unit_cell_x`, where `x` is a single digit number, using grep:
 
 ```shell
 grep "unit_cell_[0-9]\{1\}\." force_regs.ucli
@@ -194,8 +99,7 @@ vim force_regs.ucli
 ```
 
 Notice how you need to be careful what characters get escaped (the `[` is not escaped but `{` is). Now
-imagine we want to add a leading 0 to all of the single digit numbers. The match string in sed
-could be:
+imagine we want to add a leading 0 to all of the single digit numbers. The match string in `sed` could be:
 
 ```shell
 sed -e 's/\(unit_cell_\)\([0-9]\{1\}\.\)/\10\2/' force_regs.ucli
@@ -221,7 +125,7 @@ And in grep, you can use the -E flag:
 grep -E "unit_cell_[0-9]{1}\." force_regs.ucli
 ```
 
-sed and grep can be used for many purposes beyond text search and replace. For example, to find all files in the current directory with filenames that contain a specific text string:
+`sed` and grep can be used for many purposes beyond text search and replace. For example, to find all files in the current directory with filenames that contain a specific text string:
 
 ```shell
 find . | grep ".ucli"
@@ -252,11 +156,13 @@ man sed
 
 ## File Permissions <a name="paragraph3"></a>
 
-A tutorial about file permissions can be found [here](http://www.tutorialspoint.com/unix/unix-file-permission.htm) and answer the [questions](#Questions).
+A tutorial about file permissions can be found [here](http://www.tutorialspoint.com/unix/unix-file-permission.htm) and answer the [question 4](#Questions).
 
 ## Makefiles <a name="paragraph4"></a>
 
-Makefiles are a simple way to string together a bunch of different shell tasks in an intelligent manner. This allows someone to automate tasks and save time when doing repetitive tasks since make targets allow for only files that have changed to need to be updated. Please read through the tutorial [here](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/) (optional). Further documentation on make can be found [here](http://www.gnu.org/software/make/manual/make.html).
+Makefiles are a simple way to string together a bunch of different shell tasks in an intelligent manner. This allows someone to automate tasks and save time when doing repetitive tasks since make targets allow for only files that have changed to need to be updated. The official documentation on make can be found [here](http://www.gnu.org/software/make/manual/make.html).
+
+> **TASK (optional):** Please read through this [tutorial](http://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/) . 
 
 Let’s look at a simple makefile to explain a few things about how they work - this is not meant to be anything more than a very brief overview of what a makefile is and how it works. If you look at the Makefile in the provided folder in your favorite text editor, you can see the following lines:
 
@@ -310,7 +216,7 @@ vimdiff force_regs.ucli force_regs.random.ucli
 
 ## Git <a name="paragraph6"></a>
 
-Build your familiarity with Git by answering [Question 6](#paragraph8)
+Build your familiarity with Git by answering [question 6](#paragraph8)
 
 ## Conclusion <a name="paragraph7"></a>
 
@@ -391,7 +297,7 @@ Submit the **command** required to perform the following tasks:
 1. How do you switch to a new branch?
 
 ## Appendix
----
+
 ### Cheatsheets
 That was a lot of commands and a lot of new things to memorize (especially if you have not used them extensively in the past)! As a result, these are some cheatsheets that contains the key commands of some of the productivity tools we went through. *These are all the top results of searching "xx cheatsheet" in google, and are **not** created by the staff.*
 
@@ -405,7 +311,6 @@ That was a lot of commands and a lot of new things to memorize (especially if yo
 * [Tmux](https://tmuxcheatsheet.com/)
 
 ## Acknowledgement
----
 This lab is the result of the work of many EECS151/251 GSIs over the years including:
 Written By:
 - Nathan Narevsky (2014, 2017)
