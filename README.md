@@ -163,5 +163,16 @@ Clone the repo to your work directory.
 cd /home/tmp/<your-eecs-username>
 git clone git@github.com:EECS151-sp24/asic-labs-sp24-(your GitHub user ID).git
 ```
+Now, `cd` into the cloned directory. 
+Add the staff skeleton as a remote in order to pull any changes to the lab and starter code for future labs.
+
+```shell
+git remote add skeleton https://github.com/EECS150/asic-labs-sp24.git
+```
+You should now see both your github classroom and the staff skeleton if you run `git remote -v`. 
+You can run `git pull skeleton main` to pull any updates to the skeleton. 
+
+It may be the case that staff needs to make an update on already released labs, and if you have already edited skeleton code you may run into a merge conflict. 
+In this case you will have to tell git which changes you want to keep, check out [this link](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line) for a quick way to deal with such merge conflicts.
 
 This repository contains all lab materials including lab manuals (README.md) and all skeleton code in the *skel* subdirectories. 
