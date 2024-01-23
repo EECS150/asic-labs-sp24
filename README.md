@@ -161,7 +161,7 @@ Clone the repo to your work directory.
 
 ```shell
 cd /home/tmp/<your-eecs-username>
-git clone <your-asic-lab-repo>
+git clone git@github.com:EECS151-sp24/asic-labs-sp24-(your GitHub user ID).git
 ```
 
 This repository contains all lab materials including lab manuals (README.md) and all skeleton code in the *skel* subdirectories. 
