@@ -62,13 +62,30 @@ Simulation is a fundamental step in ASIC design and digital design in general. D
 
 ## Setup
 
+
 Prior to running any commmands you need to activate a Python 3.11 virtual environment with a Hammer (hammer-vlsi) installation and setup environment variables for the CAD tools licenses. Complete the following steps:
 
-1. Source the course `.bashrc`
+1. Accept the [new Github Classroom](https://inst.eecs.berkeley.edu/~eecs151/fa21/files/verilog/Verilog_Primer_Slides.pdf) assignment
+2. Clone your Github Classroom repo
+   ```
+   cd /home/tmp/<your-eecs-username>
+   git clone git@github.com:EECS151-sp24/asic-labs-(GitHub username).git
+   ```
+   The git clone link is also available in the box labeled *Quick setup — if you’ve done this kind of thing before* in Github
+3. Add the staff skeleton as a remote
+   ```
+   git remote add skeleton https://github.com/EECS150/asic-labs-sp24.git
+   ```
+4. Pull from the staff skeleton and push to your Github Classroom repo
+   ```
+   git pull staff main
+   git push -u origin main
+   ```
+5. Source the course `.bashrc`
    ```
    source /home/ff/eecs151/asic/eecs151.bashrc
    ``` 
-2. Verify Hammer was installed by running the following:
+6. Verify Hammer was installed by running the following:
     ``` 
     hammer-vlsi -h 
     ```
@@ -81,7 +98,7 @@ Prior to running any commmands you need to activate a Python 3.11 virtual enviro
                     [--lvs_rundir LVS_RUNDIR] [--sim_rundir SIM_RUNDIR]
                     ...
     ```
-3. Verify environment variables for CAD tools are setup correctly:
+7. Verify environment variables for CAD tools are setup correctly:
     ```
     echo $CALIBRE_HOME
     ```
@@ -602,7 +619,7 @@ Correlate the SDF annotated timing to the waveform from the gate level simulatio
 <li><code>delay_step0</code> is the first flip-flop in a chain. What is the output port name of this flip-flop, and how wide is this port? 
 </li>
 
-<li>Open the `vcdplus.vpd` file (should be from the gate level simulation) and examine the output of the flip-flop at around 50ns. Calculate the delay of the output transition relative to the input clock's rising edge.
+<li>Open the <code>vcdplus.vpd</code> file (should be from the gate level simulation) and examine the output of the flip-flop at around 50ns. Calculate the delay of the output transition relative to the input clock's rising edge.
 </li>
 
 <li>Can you correlate this against the delay in the SDF file by identifying the delay in the SDF file?
