@@ -65,7 +65,7 @@ Simulation is a fundamental step in ASIC design and digital design in general. D
 
 Prior to running any commmands you need to activate a Python 3.11 virtual environment with a Hammer (hammer-vlsi) installation and setup environment variables for the CAD tools licenses. Complete the following steps:
 
-1. Accept the [new Github Classroom](https://inst.eecs.berkeley.edu/~eecs151/fa21/files/verilog/Verilog_Primer_Slides.pdf) assignment
+1. Accept the [new Github Classroom](https://classroom.github.com/a/xUs4t0vn) assignment
 2. Clone your Github Classroom repo
    ```
    cd /home/tmp/<your-eecs-username>
