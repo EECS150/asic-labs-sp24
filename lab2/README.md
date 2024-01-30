@@ -34,11 +34,11 @@ College of Engineering, University of California, Berkeley
   - [Questions](#questions)
     - [Question 1: Verilog, Waveforms, and Schematics](#question-1-verilog-waveforms-and-schematics)
     - [Question 2: Understand Testbenches](#question-2-understand-testbenches)
-    - [Question 2: Writing a testbench](#question-2-writing-a-testbench)
-    - [Question 3: Evaluate Gate Level Simulations](#question-3-evaluate-gate-level-simulations)
-    - [Question 4: SDF and Visualization of Setup Time Violations](#question-4-sdf-and-visualization-of-setup-time-violations)
-    - [Question 5: Fixing hold times](#question-5-fixing-hold-times)
-    - [Question 6: Analyzing Power Reports](#question-6-analyzing-power-reports)
+    - [Question 3: Writing a testbench](#question-3-writing-a-testbench)
+    - [Question 4: Evaluate Gate Level Simulations](#question-4-evaluate-gate-level-simulations)
+    - [Question 5: SDF and Visualization of Setup Time Violations](#question-5-sdf-and-visualization-of-setup-time-violations)
+    - [Question 6: Fixing hold times](#question-6-fixing-hold-times)
+    - [Question 7: Analyzing Power Reports](#question-7-analyzing-power-reports)
   - [Acknowledgement](#acknowledgement)
 
 ## Overview
@@ -531,13 +531,16 @@ Complete the timing diagram below and create a schematic equivalant to the Veril
 
 ```verilog
 module dut (
-  input A, B, clk,
+  input A, B, clk, rst
   output reg X, Z
 );
-  always @(posedge clk) begin
-    X <= B;
-    Z <= (Z & X) | A;
-  end
+    wire tmp;
+
+    REGISTER_R #(.N(1)) delay_step0 (.clk(clk), .rst(rst), .d(B), .q(X));
+    REGISTER_R #(.N(1)) delay_step0 (.clk(clk), .rst(rst), .d(tmp), .q(Z));
+
+    assign tmp = (Z & X) | A;
+  
 endmodule
 ```
 
@@ -581,7 +584,7 @@ Testbenches useful to primarily for unit tests. Test your understanding of some 
 </ol>
 
 
-### Question 2: Writing a testbench
+### Question 3: Writing a testbench
 
 Create a testbench for the module you created for Question 1a. **Your testbench should be it's own Verilog module in a separate file.** Instantiate your DUT within the testbench rather than duplicating functionality. It should ***include initial conditions*** for the input. The simulator's waveform to your answer from Question 1a. 
 
@@ -591,7 +594,7 @@ Create a testbench for the module you created for Question 1a. **Your testbench 
 </ol>
 
 
-### Question 3: Evaluate Gate Level Simulations
+### Question 4: Evaluate Gate Level Simulations
 
 Correlate the SDF annotated timing to the waveform from the gate level simulation.
 
@@ -607,7 +610,7 @@ Correlate the SDF annotated timing to the waveform from the gate level simulatio
 </ol>
 
 
-### Question 4: SDF and Visualization of Setup Time Violations
+### Question 5: SDF and Visualization of Setup Time Violations
 
 Examine the non-zero delays in timing annotated simulations. Clock frequency selection must consider gate delay. If it frequency is too high there will be setup timing violations. Edit `sim-gl-syn.yml` to lower the clock period to 5ns (`CLOCK PERIOD=5.00`). Now, simulate again. 
 
@@ -627,7 +630,7 @@ Replace the value for the "sdf_file" key in in <code>sim-gl-syn.yml</code> with 
 </li>
 </ol>
 
-### Question 5: Fixing hold times
+### Question 6: Fixing hold times
 
 Setup times can be fixed by increasing the clock period (lower the frequency), but hold times cannot, because the capturing edge relationship in the hold violation do not change with clock period. Later, you will learn how the CAD tools do this for you, but in this problem you will manually identify the error in the SDF and fix it.
 
@@ -662,7 +665,7 @@ hold fix.
 </ol>
 
 
-### Question 6: Analyzing Power Reports
+### Question 7: Analyzing Power Reports
 <ol type="a">
 <li>
 Open <code>build/power-rundir/activePowerReports/ss_100C_1v60.setup_view.rpt</code>. What is the most obvious difference in the power numbers compared to the hold view file? What do you think is the dominant factor contributing to this difference?
