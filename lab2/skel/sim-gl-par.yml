@@ -1,0 +1,36 @@
+# Post-PAR Gate-Level Simulation Variables
+sim.inputs:
+  input_files:
+    - "src/post-par-sim/fir.sim.v"
+    - "src/fir_tb.v"
+  level: "gl"
+  timing_annotated: true
+  sdf_file: "src/post-par-sim/fir.par.sdf"
+  all_regs: "src/post-par-sim/find_regs_paths.json"
+  seq_cells: "src/post-par-sim/find_regs_cells.json"
+  saif:
+    mode: "time"
+    start_time: "0ns"
+    end_time: "26ns"
+  timescale: "1ns/10ps"
+  options:
+    - "-notice"
+    - "-line"
+    - "+lint=all"
+    - "+v2k"
+    - "-debug"
+    - "-sverilog"
+  top_module: "fir"
+  tb_name: "fir_tb"
+  defines: 
+    - "CLOCK_PERIOD=1.00"
+  defines_meta: append
+
+power.inputs:
+  saifs:
+    - "src/post-par-sim/ucli.saif"
+  spefs:
+    - "src/post-par-sim/fir.hold.par.spef"
+    - "src/post-par-sim/fir.setup.par.spef"
+  database: "src/post-par-sim/fir_FINAL"
+  tb_name: "fir_tb"

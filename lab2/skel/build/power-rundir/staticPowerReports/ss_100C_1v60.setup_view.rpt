@@ -1,0 +1,109 @@
+*----------------------------------------------------------------------------------------
+*	Voltus IC Power Integrity Solution 18.17-s057_1 (64bit) 03/23/2020 10:35 (Linux 2.6.18-194.el5)
+*	
+*
+* 	Date & Time:	2023-Jun-08 10:29:32 (2023-Jun-08 17:29:32 GMT)
+*
+*----------------------------------------------------------------------------------------
+*
+*	Design: fir
+*
+*	Liberty Libraries used: 
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sky130_fd_sc_hd__ss_100C_1v60.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_32x32m2w8_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_64x32m4w32_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_512x32m4w8_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_1024x32m8w8_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_1024x32m8w32_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_1024x64m8w32_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_2048x32m8w8_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_4096x8m8w8_replica_v1_tt_025C_1v80.lib
+*	        ss_100C_1v60.setup_view: /scratch/nk/asic_labs/lab1/sky130/src/post-par-sim/fir_FINAL/libs/mmmc/sramgen_sram_4096x32m8w8_replica_v1_tt_025C_1v80.lib
+*
+*	Power Domain used: 
+*              Rail:        VDD      Voltage:        1.6 
+*
+*	Parasitic Files used: 
+*	        /scratch/nk/asic_labs/lab1/sky130/build/par-rundir/fir.ss_100C_1v60.par.spef
+*
+*       Power View : ss_100C_1v60.setup_view
+*
+*       User-Defined Activity : N.A.
+*
+*       Activity File: N.A.
+*
+*       Hierarchical Global Activity: N.A.
+*
+*       Global Activity: N.A.
+*
+*       Sequential Element Activity: 0.200000
+*
+*       Primary Input Activity: 0.200000
+*
+*       Default icg ratio: N.A.
+*
+*       Global Comb ClockGate Ratio: N.A.
+*
+*	Power Units = 1mW
+*
+*	Time Units = 1e-09 secs 
+*
+*       report_power -output staticPowerReports.ss_100C_1v60.setup_view -view ss_100C_1v60.setup_view
+*
+-----------------------------------------------------------------------------------------
+
+
+Total Power 
+-----------------------------------------------------------------------------------------
+Total Internal Power:        0.29617974 	   11.4081%
+Total Switching Power:       2.29352875 	   88.3411%
+Total Leakage Power:         0.00650963 	    0.2507%
+Total Power:                 2.59621812 
+-----------------------------------------------------------------------------------------
+
+
+Group                           Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+Sequential                        0.1374     0.01386   0.0002852      0.1515       5.848 
+Macro                                  0           0           0           0           0 
+IO                                     0           0           0           0           0 
+Combinational                     0.1331       2.201   0.0007864       2.334        90.1 
+Clock (Combinational)            0.02572     0.07909   3.496e-05      0.1048       4.047 
+Clock (Sequential)                     0           0           0           0           0 
+-----------------------------------------------------------------------------------------
+Total                             0.2962       2.294    0.001107       2.591       99.79 
+-----------------------------------------------------------------------------------------
+
+
+Clock                           Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+clk                              0.02572     0.07909   3.496e-05      0.1048       4.038 
+-----------------------------------------------------------------------------------------
+Total (excluding duplicates)     0.02572     0.07909   3.496e-05      0.1048       4.038 
+-----------------------------------------------------------------------------------------
+Clock: clk
+Clock Period: 0.005000 usec 
+Clock Toggle Rate:   400.0000 Mhz 
+Clock Static Probability:  0.5000
+
+
+
+Rail                  Voltage   Internal   Switching     Leakage       Total  Percentage 
+                                Power      Power         Power         Power  (%)        
+-----------------------------------------------------------------------------------------
+VDD                       1.6     0.2962       2.294    0.001107       2.591       99.79 
+
+
+-----------------------------------------------------------------------------------------
+*	Power Distribution Summary: 
+*                Highest Average Power:            FE_OFC3_Out_10 (sky130_fd_sc_hd__buf_8):           0.4054 
+*                Highest Leakage Power:       CTS_ccl_a_inv_00009 (sky130_fd_sc_hd__clkinv_16):        1.826e-05 
+*          Total Cap:      1.87303e-11 F
+*          Total instances in design: 1582999
+*          Total instances in design with no power:     0
+*          Total instances in design with no activity:     0
+*          Total Fillers and Decap: 1582853
+-----------------------------------------------------------------------------------------
+
