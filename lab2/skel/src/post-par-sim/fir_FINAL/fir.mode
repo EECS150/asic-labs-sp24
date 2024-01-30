@@ -1,0 +1,77 @@
+catch { setDesignMode -expressRoute true }
+catch { setDesignMode -flowEffort standard }
+catch { setDesignMode -process 130 }
+catch { setAnalysisMode -analysisType onChipVariation }
+catch { setAnalysisMode -checkType setup }
+catch { setAnalysisMode -clkSrcPath true }
+catch { setAnalysisMode -clockPropagation sdcControl }
+catch { setAnalysisMode -cppr both }
+catch { setAnalysisMode -usefulSkew true }
+catch { setOptMode -activeHoldViews { ff_n40C_1v95.hold_view  } }
+catch { setOptMode -activeSetupViews { ss_100C_1v60.setup_view } }
+catch { setOptMode -autoHoldViews { ff_n40C_1v95.hold_view } }
+catch { setOptMode -autoSetupViews { ss_100C_1v60.setup_view} }
+catch { setOptMode -autoTDGRSetupViews { ss_100C_1v60.setup_view} }
+catch { setOptMode -autoViewHoldTargetSlack 1000 }
+catch { setOptMode -checkRoutingCongestion true }
+catch { setOptMode -clkGateAware false }
+catch { setOptMode -deleteInst true }
+catch { setOptMode -drcMargin 0 }
+catch { setOptMode -fixDrc true }
+catch { setOptMode -fixFanoutLoad true }
+catch { setOptMode -holdTargetSlack 0.1 }
+catch { setOptMode -honorFence true }
+catch { setOptMode -optimizeFF true }
+catch { setOptMode -postRouteAreaReclaim setupAware }
+catch { setOptMode -preserveAllSequential false }
+catch { setOptMode -reclaimArea true }
+catch { setOptMode -setupTargetSlack 0.1 }
+catch { setOptMode -verbose true }
+setExtractRCMode  -engine postRoute -total_c_th 5 -relative_c_th 0.03 -coupling_c_th 3 -minNetTermNrToBeInMem 50
+catch {setNanoRouteMode -quiet -drouteAntennaFactor 1.000000}
+catch {setNanoRouteMode -quiet -droutePostRouteSpreadWire "true"}
+catch {setNanoRouteMode -quiet -drouteStartIteration 0}
+catch {setNanoRouteMode -quiet -drouteUseMultiCutViaEffort "medium"}
+catch {setNanoRouteMode -quiet -extractThirdPartyCompatible false}
+catch {setNanoRouteMode -quiet -grouteExpTdStdDelay 66.900000}
+catch {setNanoRouteMode -quiet -hfrouteSearchRepair "true"}
+catch {setNanoRouteMode -quiet -routeAntennaCellName "sky130_fd_sc_hd__diode_2"}
+catch {setNanoRouteMode -quiet -routeConcurrentMinimizeViaCountEffort "high"}
+catch {setNanoRouteMode -quiet -routeInsertAntennaDiode true}
+catch {setNanoRouteMode -quiet -routeReInsertFillerCellList "sky130_fd_sc_hd__fill_1 sky130_fd_sc_hd__fill_2 sky130_fd_sc_hd__fill_4 sky130_fd_sc_hd__fill_8"}
+catch {setNanoRouteMode -quiet -routeReInsertFillerCellListFromFile false}
+catch {setNanoRouteMode -quiet -routeWithSiDriven true}
+catch {setNanoRouteMode -quiet -routeWithSiPostRouteFix false}
+catch {setNanoRouteMode -quiet -routeWithTimingDriven true}
+
+catch { setPlaceMode -place_detail_check_cut_spacing true }
+catch { setPlaceMode -place_global_cong_effort high }
+catch { setPlaceMode -place_global_place_io_pins true }
+catch { setPlaceMode -place_global_solver_effort high }
+catch { setIlmMode -keepHighFanoutPorts true -keepLoopBack false -keepFlatten true }
+catch { set_well_tap_mode -cell sky130_fd_sc_hd__tapvpwrvgnd_1 }
+catch { setUsefulSkewMode -ecoRoute false }
+catch { setDelayCalMode -enable_high_fanout true }
+catch { setDelayCalMode -eng_copyNetPropToNewNet true }
+catch { setDelayCalMode -engine aae }
+catch { setDelayCalMode -ignoreNetLoad false }
+catch { setDelayCalMode -SIAware true }
+catch { setPinAssignMode -pinEditInBatch false }
+catch { setPinAssignMode -promotedMacroMaxLayer met5 }
+catch { setPinAssignMode -promotedMacroMinLayer li1 }
+catch { setHierMode -disableArt false }
+catch { setHierMode -reportPostRouteArtTiming false }
+catch { setHierMode -trialRouteHonorReadOnly false }
+catch { setSIMode -separate_delta_delay_on_data true }
+catch { setAddStripeMode -spacing_from_block 2 }
+catch { setAddStripeMode -stacked_via_bottom_layer met4 }
+catch { setAddStripeMode -stacked_via_top_layer met5 }
+catch { setAddStripeMode -trim_antenna_back_to_shape stripe }
+catch { setRouteMode -earlyGlobalRouteSecondPG false }
+catch { setEndCapMode -boundary_tap true }
+catch { setEndCapMode -leftEdge sky130_fd_sc_hd__tap_1 }
+catch { setEndCapMode -rightEdge sky130_fd_sc_hd__tap_1 }
+catch { setFillerMode -core {sky130_fd_sc_hd__fill_1 sky130_fd_sc_hd__fill_2 sky130_fd_sc_hd__fill_4 sky130_fd_sc_hd__fill_8} }
+catch { setFPlanMode -defaultPowerDomainSite true }
+catch { setFPlanMode -maxIoHeight true }
+catch { setFPlanMode -powerRailLayer {} }

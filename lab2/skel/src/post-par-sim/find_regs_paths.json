@@ -1,0 +1,82 @@
+[
+  {
+    "path": "delay_step0/\\q_reg[3]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step0/\\q_reg[2]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step0/\\q_reg[0]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step0/\\q_reg[1]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step1/\\q_reg[3]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step1/\\q_reg[2]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step1/\\q_reg[0]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step1/\\q_reg[1]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step2/\\q_reg[3]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step2/\\q_reg[2]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step2/\\q_reg[0]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step2/\\q_reg[1]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step3/\\q_reg[3]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step3/\\q_reg[2]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step3/\\q_reg[0]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step3/\\q_reg[1]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step4/\\q_reg[3]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step4/\\q_reg[2]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step4/\\q_reg[0]",
+    "pin": "Q"
+  },
+  {
+    "path": "delay_step4/\\q_reg[1]",
+    "pin": "Q"
+  }
+]
