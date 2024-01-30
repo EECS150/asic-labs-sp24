@@ -78,7 +78,7 @@ Prior to running any commmands you need to activate a Python 3.11 virtual enviro
    ```
 4. Pull from the staff skeleton and push to your Github Classroom repo
    ```
-   git pull staff main
+   git pull skeleton main
    git push -u origin main
    ```
 5. Source the course `.bashrc`
