@@ -598,7 +598,7 @@ dve -vpd vcdplus.vpd &
    - area
    - maximum operating frequency(with a period resolution of 100ps) now?
 
-3. Submit your divider code and testbench to the report. Also, `git push` all your work to github repository. Add comments to explain your testbench and why it provides sufficient coverage for your divider module. (You don't have to run post-synthesis simulation for Question 6 c). That is, run `make sim-rtl` to verify your testbench).
+3. Submit your divider code and testbench to the report. Also, `git push` all your work to github repository. Add comments to explain your testbench and why it provides sufficient coverage for your divider module. (You don't have to run post-synthesis simulation for Question 5). That is, run `make sim-rtl` to verify your testbench).
 
 
 ## Acknowledgement
