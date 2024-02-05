@@ -268,7 +268,7 @@ Look [here](https://inst.eecs.berkeley.edu/~eecs151/fa21/files/verilog/ready_val
 The GCD top level is shown in the figure below.
 
 <p align="center">
-<img src="{% link /assets/images/block-diagram.png %}" width="600" />
+<img src="figs/block-diagram.png" width="600" />
 </p>
 
 The GCD module declaration is as follows:
