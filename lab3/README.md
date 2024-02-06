@@ -565,7 +565,7 @@ Copy and paste the display result of 20~29 cycle count.
 
 
 ### Question 2: Reporting Questions
-1. Which report would you look at to find the total number of each different standard cell that the design contains?
+1. Which report would you look at to find the total number of each different standard cell that the design contains? Hint: Take a look in `build/syn-rundir/reports`.
 2. Which report contains area breakdown by modules in the design?
 
 3. What is the cell used for `A_register/q_reg[7]`? How much leakage power does `A_register/q_reg[7]` contribute? How did you find this?
@@ -573,8 +573,8 @@ Copy and paste the display result of 20~29 cycle count.
 ### Question 3: Synthesis Questions
 1. Looking at the total number of instances of sequential cells synthesized and the number of `reg` definitions in the Verilog files, are they consistent? If not, why?
 
-2. Reduce the clock period by the amount of slack in the timing report. Does it still meet timing? Why or why not? Does the critical path stay the same? If not, what changed?
 
+2. Reduce the clock period (in `design.yml`) by the amount of slack in the timing report. Now run the synthesis flow again. Does it still meet timing? Why or why not? Does the critical path stay the same? If not, what changed?
  <!-- Modify the clock period (with a resolution of 1ns) in the `design.yml` file to make the design go faster. What is the highest clock frequency (in terms of MHz) this design can operate at in this technology? (only write the numeric value. Assume the unit is in MHz)** -->
 
 ### Question 4: Delay Questions
