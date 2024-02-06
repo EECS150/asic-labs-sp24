@@ -57,7 +57,7 @@ Setup CAD tools environment:
 source /home/ff/eecs151/asic/eecs151.bashrc
 ```
 **Objective:** 
-This lab will cover logic synthesis. You were briefly introduced to the concept in Lab 2, but were given all the output products and asked to analyze them. In this lab, you will complete synthesis yourself for a small design. The steps and skills learned in this design can be applied to larger more complex designs (i.e. accelerators, or full SoCs).
+This lab will cover logic synthesis. You were briefly introduced to the concept in Lab 2, but were given all the output products and asked to analyze them. In this lab, you will complete synthesis yourself for two small designs: (1) an example design provided to you and (2) a design you create yourself. The steps and skills learned to synthesize these designs can be applied to larger more complex designs (i.e. accelerators, or full SoCs).
 
 **Topics Covered**
 - Logic Synthesis
@@ -65,6 +65,7 @@ This lab will cover logic synthesis. You were briefly introduced to the concept 
 - Hammer
 - Skywater 130mm PDK
 - Behavorial RTL Simulation
+- Reading Reports
 
 **Recommended Reading**
 - [Verilog Primer](https://inst.eecs.berkeley.edu/~eecs151/fa21/files/verilog/Verilog_Primer_Slides.pdf)
@@ -76,14 +77,14 @@ This lab will cover logic synthesis. You were briefly introduced to the concept 
 
 ## What is Synthesis?
 
-Synthesis is the transformation of register transfer level code (typically Verilog or VHDL) into a gate-level netlist. A synthesized gate-level Verilog netlist only contains cells! These cells are from the PDK which provides for each cell: a transistor-level schematic with transistor sizes provided, a physical layout containing information necessary for fabrication, timing libraries providing performance specifications, etc. 
+Synthesis is the transformation of RTL, typically Verilog or VHDL, into a gate-level netlist. A synthesized gate-level Verilog netlist only contains cells! These cells are from the PDK which provides for each cell: a transistor-level schematic with transistor sizes provided, a physical layout containing information necessary for fabrication, timing libraries providing performance specifications, etc. 
 
 Cadence *Genus* is the tool used to perform synthesis in this class.
 The first step in this process is the compilation and elaboration of RTL [1].
 From [IEEE Std 1800-2017](https://ieeexplore.ieee.org/document/8299595), **compilation** is the process of reading RTL and analyzing it for syntax and semantic errors.
 **Elaboration** is the subsequent process of expanding instantiations and hierarchies, parsing parameter values, and establishing netlist connectivity.
 Elaboration in *Genus* returns a generic netlist formed from generic gates.
-**Generic** in this context means that the design is represented structurally in terms of gates such as `CDN_flop` and `CDN_mux2` and that these gates have no physical correlation to the gates provided in the standard cell library associated with a technology.
+"Generic" in this context means that the design is represented structurally in terms of gates such as `CDN_flop` and `CDN_mux2` and that these gates have no physical correlation to the gates provided in the standard cell library associated with a technology.
 
 
 ### Introduction to Static Timing Analysis
@@ -135,7 +136,7 @@ While it is impossible to describe the complete capabilities of timing libraries
           }
 
 Now consider **wire delays**.
-The following fragment is fabricated for instructional purposes as the Intel library does not use `wire_load` definitions for STA nor does Hammer currently have facilities to use the `QRC Techfile` for STA analysis in synthesis.
+The following fragment is fabricated for instructional purposes.
 Despite being fictional, this model is in fact instructive.
 Based on the enclosure area of a net, a `wire_load` macro model is chosen.
 Multipliers from the macro model are used to scale resistance values (ohms) and capacitance values (fF) based on cell fanout.
@@ -157,18 +158,17 @@ To improve results, some companies have replaced wireload models from the foundr
     }
     default_wire_load_mode : enclosed ;
 
-With this new information, consider how timing analysis from EECS 151/251A may now be performed using real data.
+<!-- With this new information, consider how timing analysis from EECS 151/251A may now be performed using real data.
 Specifically, timing analysis was previously done largely with cell and wire delays provided as context in exercises.
 Correlate the above inspections to the delays that were provided in previous course material, and understand that you can now derive those delays by looking at PDK documents.
-Beyond this, there are a slew of other STA topics, including correlated clocks, jitter, insertion delays, etc., but these are ignored for now.
+Beyond this, there are a slew of other STA topics, including correlated clocks, jitter, insertion delays, etc., but these are ignored for now. -->
 
 
 <a id="task-2-putting-it-all-together"></a>
 
 ## Synthesis Environment
 To perform synthesis, we will be using Cadence *Genus*. However, we will not be interfacing with
-*Genus* directly, we will rather use Hammer. Just like in lab 2, we have set up the basic Hammer
-flow for your lab exercises using Makefile.
+*Genus* directly, we will rather use Hammer. Just like in Lab 2, we have set up the basic Hammer flow for your lab exercises using a Makefile.
 
 In this lab repository, you will see two sets of input files for Hammer:
 1. Source code in the *skel* direction
@@ -201,14 +201,14 @@ They should never be copied outside of instructional machines under any circumst
 Let us take a look at some parts of `design.yml` file: -->
 
 ### Interpreting the YAML files
-For this lab it is important to realize the different YAML files supporting synthesis and simulation, *design.yml* and *sim-rtl.yml* respectively. 
+For this lab, it is important to realize the differences and similarities between the YAML files supporting synthesis and simulation, *design.yml* and *sim-rtl.yml* respectively. 
 
 #### Interpreting the YAML: *design.yml*
 ---
 Let's examine the details of the *design.yml* file.
 <br />
 
-When you synthesize a design, you tell the tools the expected clock frequency which you anticipate the design will be run at, or the *target frequency*. The line below creates the variable `CLK_PERIOD` to be used within the YAML file and assigns to it the target clock frequency for our design (20ns). 
+When you synthesize a design, you tell the tools the expected clock frequency which you anticipate the design will be run at, or the *target frequency*. The line below creates the variable `CLK_PERIOD` to be used within the YAML file and assigns to it the target clock period (which indirectly specifies the frequency) for our design (20ns). 
 
 
 ```yaml
@@ -264,8 +264,8 @@ sim.inputs:
 ```
 
 ## Handshaking
-A critical aspect of designing complex circuits with Verilog is that inter-module synchronization between a producer and a consumer.
-"Handshaking" describes the negoitiation process two between modules to exchange information; one module (producer) initiates a transaction and the another module (consumer) agrees to continue with it or indicates it's ready to continue with another transaction. Handdshake protocols have varying levels of complexity, however simplest in digital logic design is a ready-valid interface. Below we describe the simplest ready-valid interface:
+A critical aspect of designing complex circuits with Verilog is the inter-module synchronization between a producer and a consumer.
+"Handshaking" describes the negoitiation process two between modules to exchange information; one module (producer) initiates a transaction and the another module (consumer) agrees to continue with it or indicates it's ready to continue with another transaction. Handshake protocols have varying levels of complexity, however the most in digital logic design is a ready-valid interface. Below we describe the simplest ready-valid interface:
 <center> 
 
 | Signal 	| Description                                                                                               	|
@@ -276,7 +276,7 @@ A critical aspect of designing complex circuits with Verilog is that inter-modul
 
 </center> 
 
-The exact implementation of a ready-valid interface may vary, however the key idea is data is only exchange when both *ready* and *valid* are asserted. This condition specifies an agreement or the 'handshake'. It is important to note that no exchange happens unless both *ready* and *valid* are asserted. Look [here](https://inst.eecs.berkeley.edu/~eecs151/fa21/files/verilog/ready_valid_interface.pdf) at information on the course website for more background.
+The exact implementation of a ready-valid interface may vary, however the key idea is that data is only exchange when both *ready* and *valid* are asserted. This condition specifies an agreement or the 'handshake'. **A module can be both a producer and a consumer.** It is important to note that no exchange happens unless both *ready* and *valid* are asserted. Look [here](https://inst.eecs.berkeley.edu/~eecs151/fa21/files/verilog/ready_valid_interface.pdf) at information on the course website for more background.
 
 ## The Example Design: GCD
 
@@ -293,7 +293,7 @@ We have provided a circuit described in Verilog that computes the greatest commo
 </center> 
 
 Unlike the FIR filter from the last lab, in which the testbench constantly provided
-stimuli, the GCD algorithm has a variable latency. In other words, the number of cycles for the module to compute the output is **not** constant. This is common for many module, therefore they must indicate when the output is valid and when they are ready to receive new inputs. This is accomplished through a ready-valid interface. A block diagram and moduel declaration of the GCD top level are presented below:
+stimuli, the GCD algorithm has a variable latency. In other words, the number of cycles for the module to compute the output is **not** constant. This is common for many modules, therefore they must indicate when the output is valid and when they are ready to receive new inputs. This is accomplished through a ready-valid interface. A block diagram and moduel declaration of the GCD top level are presented below:
 
 <p align="center">
 <img src="figs/block-diagram.png" width="600" />
@@ -364,47 +364,46 @@ Hammer abstracts some details of the synthesis process. Let's examine step-by-st
 
 |    Hammer Steps    	| Description                                                                                                                                                                                                                                                                                                                                                                                                                                          	|
 |:------------------:	|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| _init_environment_ 	| Next, we need to provide *Genus* with the technology libraries from the PDK, constraints for the synthesis process (from  *design.yml*), and the source code for our design. Lastly, and critically, the step always commands *Genus* to elaborate our design.                                                                                                                                                                                         	|
+| _init_environment_ 	| Provides *Genus* with the technology libraries from the PDK, constraints for the synthesis process (from  *design.yml*), and the source code for our design. Lastly, and critically, the step always commands *Genus* to elaborate our design.                                                                                                                                                                                         	|
 |    _syn_generic_   	| This step is the **generic synthesis** step. In this step, *Genus* converts our RTL read in the previous step into an intermediate format, made up of technology-independent generic gates. These gates are purely for gate-level functional representation of the RTL we have coded, and are going to be used as an input to the next step. This step also performs logical optimizations on our design to eliminate any redundant/unused operations. 	|
 |      _syn_map_     	| This step is the **mapping** step. *Genus* takes its own generic gate-level output and converts it to our SKY130-specific gates. This step further optimizes the design given the gates in our technology. That being said, this step can also increase the number of gates from the previous step as not all gates in the generic gate-level Verilog may be available for our use and they may need to be constructed using several, simpler gates.   	|
 |    _add_tieoffs_   	| In some designs, the pins in certain cells are hardwired to 0 or 1, which requires a tie-off cell. This step adds these cells.                                                                                                                                                                                                                                                                                                                       	|
 |    _write_regs_    	| This step is purely for the benefit of the designer. For some designs, we may need to have a list of all the registers in our design. In this lab, the list of regs is used in post-synthesis simulation to generate the `force_regs.ucli`, which sets initial states of registers.                                                                                                                                                                  	|
-| _generate_reports_ 	| The reports we have seen in the previous section are generated during this step.                                                                                                                                                                                                                                                                                                                                                                     	|
+| _generate_reports_ 	| Generates post-synthesis reports on area, utilization, timing, runtime, etc                                                                                                                                                                                                                                                                                                                         	|
 |   _write_outputs_  	| This step writes the outputs of the synthesis flow. This includes the gate-level Verilog file we looked at earlier in the lab. Other outputs include the design constraints (such as clock frequencies, output loads etc., in *.sdc* format) and delays between cells (in *.sdf* format).                                                                                                                                                            	|
 
 Each step listed in the table is a seperate step executed when `make syn` is run and represents a step or sequence of step *Genus* takes for the full synthesis process.  Now, synthesize the design:
 
 
-1. Generate the *hammer.d* supplement Makefile. This was also the first step in Lab 2, but in this lab we'll learn what this file is. *hammer.d* is has a list ofn design-specific targets based upon the constraints we have provided inside the YAML files, in our case the GCD. Any of these targets can be run to execute different stages of the VLSI flow (we will take advatange of more targets in future labs). Visit the Hammer Read-The-Docs for more information on the [Hammer-Flow](https://hammer-vlsi.readthedocs.io/en/latest/Hammer-Flow/index.html).
+1. Generate the *hammer.d* supplement Makefile. This was also the first step in Lab 2, but in this lab we'll learn what this file is. The *hammer.d* file contains a list of design-specific targets based upon the constraints we have provided inside the YAML files, in our case the GCD. Any of these targets can be run to execute different stages of the VLSI flow (we will take advatange of more targets in future labs). Visit the Hammer Read-The-Docs for more information on the [Hammer-Flow](https://hammer-vlsi.readthedocs.io/en/latest/Hammer-Flow/index.html).
 
-  ```
-  make buildfile
-  ```
+    ```
+    make buildfile
+    ```
+    Running the target also copies and extracts a tarball of the SKY130 PDK to your local workspace. It will take a while to finish if you run this command first time. The extracted PDK is not deleted when you do `make clean` to avoid unnecessarily rebuilding the PDK. To explicitly remove it, you need to remove the build folder (and you should do it once you finish the lab to save your allocated disk space since the PDK is huge). 
 
-This target also copies and extracts a tarball of the SKY130 PDK to your local workspace. It will take a while to finish if you run this command first time. The extracted PDK is not deleted when you do `make clean` to avoid unnecessarily rebuilding the PDK. To explicitly remove it, you need to remove the build folder (and you should do it once you finish the lab to save your allocated disk space since the PDK is huge). 
+2. To synthesize the GCD, call `make` using the synthesis target:
 
-1. To synthesize the GCD, call `make` using the synthesis target:
+    ```
+    make syn
+    ```
 
-```
-make syn
-```
-
-This runs through all the steps of synthesis. The generated netlist is located at: *skel/build/syn-rundir/gcd.mapped.v*. In the file, there will be instantiation of cells from the PDK. It should look very different from the behavorial Verilog in the source files, but it functions the same. Attempt to follow an input through these gates to see the path it takes until the output. These files can be useful for debugging and evaluating your design.
+    This runs through all the steps of synthesis. The generated netlist is located at: *skel/build/syn-rundir/gcd.mapped.v*. In the file, there will be instantiation of cells from the PDK. It should look very different from the behavorial Verilog in the source files, but it functions the same. Attempt to follow an input through these gates to see the path it takes until the output. These files can be useful for debugging and evaluating your design.
 
 > **Note**: that you can run each step individually using the following command: `make redo-syn HAMMER_EXTRA_ARGS="--stop_after_step <hammer_step>"`. Substitute `<hammer_step>` with one of the steps listed in the table above.
 
 ### TCL?
-It should be apparent by now, that Hammer isn't a tool itself, but a layer of abstraction which makes utilizing the tools easier. But how does Hammer instruct the tool what to do? It does this by generating a TCL file which contains explicit, and verbose, *Genus* understands. This is how Hammer operates with all CAD tools, through scripts!
+It should be apparent by now, that Hammer isn't a tool itself, but a layer of abstraction which makes utilizing the tools easier. But how does Hammer instruct the tool what to do? It does this by generating a TCL file which contains explicit, and verbose, commands *Genus* understands. This is how Hammer operates with all CAD tools, through scripts!
 
 Let's see what's behind the curtain and analyze the TCL script Hammer generated for synthesis with *Genus*. Open the TCL file located at: *skel/build/syn-rundir/syn.tcl*. You should see some TCL commands for the steps listed in the section above.
 
 ### Reports
 Go to *build/syn-rundir/reports*. There should be the following reports generated as output products of synthesis: 
-- final_area.rpt
-- final_gates.rpt
-- final_qor.rpt
-- final.rpt
-- final_time_ss_100C_1v60.setup_view.rpt
+- *final_area.rpt*
+- *final_gates.rpt*
+- *final_qor.rpt*
+- *final.rpt*
+- *final_time_ss_100C_1v60.setup_view.rpt*
 
 Go through these files and familiarize yourself with the information these reports provide. One report of particular note is `final_time_ss_100C_1v60.setup_view.rpt`. The name of this file represents that it is a timing report, with the Process Voltage Temperature corner of ss(slow-slow) corner, 1.60 V and 100 degrees C, and that it contains the setup timing checks. This corner represents the worse operating conditions for a circuit, and provides a quick worse case analysis. Open the `final_time_ss_100C_1v60.setup_view.rpt` file and look at the first block of text you see. It should look similar to this:
 
@@ -474,6 +473,7 @@ a 5201 ps of slack, this means we can run this synthesized design with a period 
 > 3. What are the sub-steps elaboration and syn_design?
 > 4. What is output of synthesis? 
 > 5. The cells used in the output of the synthesis process come from where?
+> 6. What is slack?
 > &nbsp;
 
 ## Post-Synthesis Simulation
@@ -492,12 +492,12 @@ In this section, you will build a parameterized divider of unsigned integers. Yo
 3. Synthesize your design
   
 ### Write the Design
-Some initial code has been provided to help you get started. To keep the control logic simple, we provide the follow specification for you to follow: 
+Some initial code in the *skel* directory (*divider.v* and *divider_testbench.v*) has been provided to help you get started. To keep the control logic simple, we provide the follow specification for you to follow: 
 
 - Inputs:
   - `start` - a 1-bit input that when asserted computation begins on the ***next*** clock cycle
-  - `dividend` - the dividened with a parameterized bit-width; 
-  - `divisor` - the divisor with a parameterized bit-width; should be registered when `start` is HIGH 
+  - `dividend` - the dividened with a parameterized bit-width
+  - `divisor` - the divisor with a parameterized bit-width
 - Outputs:
   - `done` - a 1-bit output asserted when the division result is valid
 - The `dividend` and `divisor` inputs should be registered when `start` is HIGH
@@ -553,7 +553,6 @@ you understand the provided code:
 1. Looking at the total number of instances of sequential cells synthesized and the number of `reg` definitions in the Verilog files, are they consistent? If not, why?
 
 2. Reduce the clock period (in `design.yml`) by the amount of slack in the timing report. Now run the synthesis flow again. Does it still meet timing? Why or why not? Does the critical path stay the same? If not, what changed?
- <!-- Modify the clock period (with a resolution of 1ns) in the `design.yml` file to make the design go faster. What is the highest clock frequency (in terms of MHz) this design can operate at in this technology? (only write the numeric value. Assume the unit is in MHz)** -->
 
 ### Question 4: Delay Questions
 Check the waveforms in DVE. 
@@ -569,12 +568,12 @@ dve -vpd vcdplus.vpd &
 3. Is the delay from the waveform the same as from the sdf file? Why or why not?
 
 ### Question 5: Synthesized Divder
-1.  From the report of your synthesized divder determine its:
-  - critical path and the slack
-  - total cell area
-  - maximum operating frequency in MHz from the reports (You might need to re-run synthesis multiple times to determine the maximum achievable frequency)
+1. From the reports of your 4-bit synthesized divder, determine its:
+   - critical path and the slack
+   - total cell area
+   - maximum operating frequency in MHz from the reports (You might need to re-run synthesis multiple times to determine the maximum achievable frequency)
 
-2. Change the bitwidth of your divider to 32-bit, what is the 
+2. From the reports of your 32-bit synthesized divder, determine its:
    - critical path and the slack
    - total cell area
    - maximum operating frequency in MHz from the reports (You might need to re-run synthesis multiple times to determine the maximum achievable frequency)
