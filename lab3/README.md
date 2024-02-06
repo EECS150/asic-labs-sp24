@@ -504,7 +504,8 @@ HIGH when the division result is valid. The input `dividend` and `divisor` shoul
 when `start` is HIGH. You are not required to handle corner cases such as dividing by 0. You are
 free to modify the skeleton code to implement a ready/valid interface instead, but it is not required.
 
-It is suggested that you implement the divide algorithm described [here](http://bwrcs.eecs.berkeley.edu/Classes/icdesign/ee141_s04/Project/Divider%20Background.pdf). Use the **Divide Algorithm Version 2** (slide 9).
+It is suggested that you implement the divide algorithm described [here](./divider_algorithms.pdf). You can choose to use **Divider Algorithm 1** (slide 4) or **Divider Algorithm 2** (slide 9). Note: The diagram for **Divider Algorithm 2** is slightly incorrect (the box labeled **1.** should be ignored). It may help to go through the algorithms by hand first and then implement them in hardware.
+
 A simple testbench skeleton is also provided to you. You should change it to add more test vectors,
 or test your divider with different bitwidths. You need to change the file `sim-rtl.yml` to use your
 divider instead of the GCD module when testing.
