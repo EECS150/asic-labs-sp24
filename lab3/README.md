@@ -505,7 +505,7 @@ Some initial code in the *skel* directory (*divider.v* and *divider_testbench.v*
   - You are not required to handle corner cases such as dividing by 0. 
   - You are free to modify the skeleton code to implement a ready/valid interface instead, but it is not required.
 
-It is suggested that you implement the divide algorithm described [here](./divider_algorithms.pdf). You can choose to use **Divider Algorithm 1** (slide 4) or **Divider Algorithm 2** (slide 9). Note: The diagram for **Divider Algorithm 2** is slightly incorrect (the box labeled **1.** should be ignored). It may help to go through the algorithms by hand first and then implement them in hardware.
+It is suggested that you implement the divide algorithm described [here](./divider_algorithms.pdf). You can choose to use **Divider Algorithm 1** (slide 4) or **Divider Algorithm 2** (slide 9). NOTE: The diagram for algorithm 2 is slightly incorrect (the box labeled **1.** should be ignored on the first cycle/iteration and the arrow should point above box **1** so that the left shift of the remainder box is performed last before the next cycle/iteration). It may help to go through the algorithms by hand first and then implement them in hardware.
 
 ### Verify functionality with a RTL simulation
 A simple testbench skeleton is also provided to you. You should change it to add more test vectors, or test your divider with different bitwidths. You need to change the file *sim-rtl.yml* to use your divider instead of the GCD module when testing.
