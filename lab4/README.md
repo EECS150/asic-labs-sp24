@@ -44,15 +44,15 @@ source /home/ff/eecs151/asic/eecs151.bashrc
 ```
 
 ```shell
-git clone /home/ff/eecs151/labs/lab3
-cd lab3
+cd /home/tmp/<your-eecs-username>
+cd asic-labs-<github-username>
+git pull skeleton main
+git push -u origin main
 ```
-
-You should also clean up the build directory generated from the previous labs to save some disk space.
 
 ## Writing Your Coprocessor
 
-Take a look at the `gcd_coprocessor.v` file in the src folder. You will see the following empty Verilog module.
+Take a look at the `gcd_coprocessor.v` file in the `skel/src` folder. You will see the following empty Verilog module.
 
 ```verilog
 module gcd_coprocessor #( parameter W = 32 )(
@@ -86,6 +86,7 @@ This FIFO is implemented with a 2-dimensional array of data called `buffer`. The
 A partially written FIFO has been provided for you in `fifo.v`. Using the information above, complete the FIFO implementation so that it behaves as expected.
 
 
+
 Then, finish the coprocessor implementation in `gcd_coprocessor.v`, so that the GCD unit and FIFOs are connected like in the following diagram. Note the connection between the `gcd_datapath` and `gcd_control` should be very similar to that in Lab 3’s `gcd.v` and that clock and reset are omitted from the diagram. You will need to think about how to manage a ready/valid decoupled interface with 2 FIFOs in parallel.
 
 
@@ -102,37 +103,37 @@ a) Submit your code (`gcd_coprocessor.v` and `fifo.v`) and show that your code w
 
 ---
 
-## Introducing Place and Route
+# Place and route
 
 In this lab, you will begin to implement your GCD coprocessor in physical layout–the next step towards making it a real integrated circuit. Place & Route (P&R or PAR) itself is a much longer process than synthesis, so for this lab we will look at the first few steps: floorplanning, placement, power straps, and clock tree synthesis (CTS). The rest will be introduced in the next lab.
 
-### Setting up for P&R
+## Setting up for P&R
 
-We will first bring our design to the point we stopped in Lab 3. Synthesize your design:
+We will first bring our design to the point we stopped in the previous lab. Synthesize your design:
 
 
 ```shell
 make syn
 ```
 
-Before proceeding, make sure your design meets timing at the default 1ns clock period.
+Before proceeding, make sure your design meets timing at the default clock period.
 
-### Floorplanning & Placement
+## Floorplanning & Placement
 Floorplanning is the process of allocating area to the design and constraining how the area is utilized. Floorplanning is often the most important factor for determining a physical circuit’s performance, because intelligent floorplanning can assist the tool in minimizing the delays in the design, especially if the total area is highly constrained.
 
 Floorplan constraints can be “hard” or “soft”. “Hard” constraints generally involve pre-placement of “macros”, which can be anything from memory elements (SRAM arrays, in an upcoming lab) to analog black boxes (like PLLs or LDOs). “Soft” constraints are generally guided placements of hierarchical modules in the design (e.g. the datapath, controller, and FIFOs in your coprocessor), towards certain regions of the floorplan. Generally, the P&R tool does a good job of placing hierarchical modules optimally, but sometimes, a little human assistance is necessary to eke out the last bit of performance.
 
 In this lab, we will just look at allocating a custom sized area to our design, specified in the `design.yml` file. Open up this file and locate the following text block:
 
-```verilog
+```yaml
 # Placement Constraints
 vlsi.inputs.placement_constraints:
   - path: "gcd_coprocessor"
     type: "toplevel"
     x: 0
     y: 0
-    width: 150
-    height: 150
+    width: 600
+    height: 600
     margins:
       left: 10
       right: 10
@@ -140,61 +141,62 @@ vlsi.inputs.placement_constraints:
       bottom: 10
   - path: "gcd_coprocessor/GCDdpath0"
     type: "placement"
-    x: 50
-    y: 50
-    width: 50
-    height: 50
+    x: 200
+    y: 200
+    width: 200
+    height: 200
+
 # Pin Placement Constraints
 vlsi.inputs.pin_mode: generated
 vlsi.inputs.pin.generate_mode: semi_auto
 vlsi.inputs.pin.assignments: [
-  {pins: "*", layers: ["M5", "M7"], side: "bottom"}
+  {pins: "*", layers: ["met2", "met4"], side: "bottom"}
 ]
 ```
+<!---tech-->
 
 The `vlsi.inputs.placement_constraints` block specifies 2 floorplan constraints. The first one denotes the origin `(x, y)`, size `(width, height)` and border margins of the top-level block `gcd_coprocessor`. The second one denotes a soft placement constraint on the GCD datapath to be roughly in the center of the floorplan. For complicated designs, floorplans of major modules are often defined separately, and then assembled together hierarchically.
 
-Pin constraints are also shown here. All that we need to see is that all pins are located at the bottom boundary of the design, on Metal 5 and Metal 7 layers. Pin placement becomes very important in a hierarchical design, if modules need to abut each other.
+Pin constraints are also shown here. All that we need to see is that all pins are located at the bottom boundary of the design, on layers metal 2 and metal 4. <!--- tech -->
+Pin placement becomes very important in a hierarchical design, if modules need to abut each other.
 
 Placement is the process of placing the synthesized design (structural connection of standard cells) onto the specified floorplan. While there is placement of minor cells (such as bulk connection cells, antenna-effect prevention cells, I/O buffers...) that take place separately and in between various stages of design, “placement” usually refers to the initial placement of the standard cells.
 
 After the cells are placed, they are not “locked”–they can be moved around by the tool during subsequent optimization steps. However, initial placement tries its best to place the cells optimally, obeying the floorplan constraints and using complex heuristics to minimize the parasitic delay caused by the connecting wires between cells and timing skew between synchronous elements (e.g. flip-flops, memories). Poor placement (as well as poor aspect ratio of the floorplan) can result in congestion of wires later on in the design, which may prevent successful routing.
 
-### Power
+## Power
 
+In the middle of the  `sky130.yml` file, you will see this block, which contains parameters to HAMMER’s power strap auto-calculation API:
 
-In the middle of the `asap7.yml` file, you will see this block, which contains parameters to HAMMER’s power strap auto-calculation API:
-
-```verilog
+```yaml
 # Power Straps
 par.power_straps_mode: generate
 par.generate_power_straps_method: by_tracks
 par.blockage_spacing: 2.0
+par.blockage_spacing_top_layer: met3
 par.generate_power_straps_options:
-by_tracks:
-strap_layers:
-    - M3
-    - M4
-    - M5
-    - M6
-    - M7
-    - M8
-    - M9
-track_width: 14
-track_width_M3: 7
-track_width_M5: 24
-track_width_M8: 6
-track_width_M9: 6
-track_spacing: 0
-power_utilization: 0.25
-power_utilization_M8: 1.0
-power_utilization_M9: 1.0
+  by_tracks:
+    strap_layers:
+      - met2
+      - met3
+      - met4
+      - met5
+    blockage_spacing_met2: 4.0
+    track_width: 6
+    track_width_met5: 2
+    track_spacing: 1
+    track_start: 10
+    track_start_met5: 1
+    power_utilization: 0.2
+    power_utilization_met2: 0.05
+    power_utilization_met5: 0.5
 ```
 
 
-Power must be delivered to the cells from the topmost metal layers all the way down to the transistors, in a fashion that minimizes the overall resistance of the power wires without eating up all the resources that are needed for wiring the cells together. You will learn about power distribution briefly at the end of this course’s lectures, but the preferred method is to place interconnected grids of wide wires on every metal layer. There are tools to analyze the quality of the `power_distribution` network, which like the post-P&R simulations you did in Lab 2, calculate how the current being drawn by the circuit is transiently distributed across the power grid.
+Power must be delivered to the cells from the topmost metal layers all the way down to the transistors, in a fashion that minimizes the overall resistance of the power wires without eating up all the resources that are needed for wiring the cells together. You will learn about power distribution briefly at the end of this course’s lectures, but the preferred method is to place interconnected grids of wide wires on every metal layer. There are tools to analyze the quality of the `power_distribution` network, which like the post-P&R simulations you did in Lab 1, calculate how the current being drawn by the circuit is transiently distributed across the power grid.
 
-You should not need to touch this block of yaml, because the parameters are tuned for meeting design rules in this technology. However, the important parameter is `power_utilization`, which specifies that approximately 25% of the available routing space on each metal layer should be reserved for power, with the exception of Metals 8 and 9, which should have 100% coverage.
+You should not need to touch this block of yaml, because the parameters are tuned for meeting design rules in this technology. However, the important parameter is `power_utilization`, which specifies that approximately 20% of the available routing space on each metal layer should be reserved for power, with the exception of metals 2 and 5, which have 5% and 50% density, respectively.
+
 
 ### Clock Tree Synthesis (CTS): Overview
 
@@ -241,14 +243,14 @@ From the `build/par-rundir` folder, execute the following in a terminal with gra
 ```shell
 ./generated-scripts/open_chip
 ```
-The Innovus GUI will pop up with your layout and your terminal is now the Innovus shell. After the window opens, click anywhere inside the black window at the center of the GUI and press “F” to zoom-to-fit. You should see your entire design, which should look roughly similar to the one below once you disable the V8, M8, V9, and M9 layers (because recall that the power straps in these metal layers were set to 100% coverage) using the right panel by unchecking their respective boxes under the “V” column:
+The Innovus GUI should pop up with your layout, and the Innovus shell runs in your terminal. After the window opens, click anywhere inside the black window at the center of the GUI and press “F” to zoom-to-fit. You should see your entire design, which should look roughly similar to the one below once you disable the V5 and M5 layers using the right panel by unchecking their respective boxes under the "V" column:
 
 ### Checkoff 1: Innovus 
 
 Demonstrate that you are able to view your design when using Innovus.
 
 <p align="center">
-<img src="./figs/innovus_window.png" width="500" />
+<img src="./figs/sky130/innovus_window.png" width="500" />
 </p>
 
 
@@ -257,14 +259,14 @@ Take a moment to familiarize yourself with the Innovus GUI. You should also togg
 Now, let’s take a look at the clock tree a couple different ways. In the right panel, under the “Net” category, hide from view all the types of nets except “Clock”. Your design should now look approximately like this, which shows the clock tree routing:
 
 <p align="center">
-<img src="./figs/clock_tree_nets.png" width="500" />
+<img src="./figs/sky130/clock_tree_nets.png" width="500" />
 </p>
 
 
 We can also see the clock tree in its “tree” form by going to the menu Clock → CCOpt Clock Tree Debugger and pressing OK in the popup dialog. A window should pop up looking approximately like this:
 
 <p align="center">
-<img src="./figs/clock_tree_debugger.png" width="500" />
+<img src="./figs/sky130/clock_tree_debugger.png" width="500" />
 </p>
 
 
@@ -273,7 +275,7 @@ The red dots are the “leaves”, the green triangles are the clock buffers, th
 Now, let’s visualize our critical path. Go to the menu Timing → Debug Timing and press OK in the popup dialog. A window will pop up that looks approximately like this:
 
 <p align="center">
-<img src="./figs/timing_debug.png" width="500" />
+<img src="./figs/sky130/timing_debug.png" width="500" />
 </p>
 
 Examine the histogram. This shows the number of paths for every amount of slack (on the x-axis), and you always want to see a green histogram! The shape of the histogram is a good indicator of how good your design is and how hard the tool is working to meet your timing constraints (*thought experiment #3:* how so, and what would be the the ideal histogram shape?).
@@ -281,7 +283,7 @@ Examine the histogram. This shows the number of paths for every amount of slack 
 Now right-click on Path 1 in this window (the critical path), select Show Timing Analyzer and Highlight Path, and select a color. A window will pop up, which is a graphical representation of the timing reports you saw in the hammer cts debug folder. Poke around the tabs to see all the different representations of this critical path. Back in the main Innovus window, the critical path will be highlighted, showing the chain of cells along the path and the approximate routing it takes to get there, which may look something like this:
 
 <p align="center">
-<img src="./figs/critical_path_highlight.png" width="500" />
+<img src="./figs/sky130/critical_path_highlight.png" width="500" />
 </p>
 
 ---
@@ -321,11 +323,9 @@ After the `ccopt_design` command is run, you may see a bunch of white X markers 
 
 ### Question 3: Understanding P&R Steps
 
-a) Submit a snapshot of your design for each of the four steps described above (use whichever Innovus view you deem is most appropriate to show the changes of each step). Make sure the V8 M8 V9 M9 layers are not visible, and your design is zoomed-to-fit. Describe how the design layout changes for each major step in their respective figure captions.
+a) Examine the power straps on M1, in relation to the cells. You will need to zoom in far enough to see the net label on the straps. What does their pattern tell you about how digital standard cells are constructed?
 
-b) Examine the power straps on M1, in relation to the cells. You will need to zoom in far enough to see the net label on the straps. What does their pattern tell you about how digital standard cells are constructed?
-
-c) Take a note of the orientations of power straps and routing metals. If you were to place pins on the right side of this block instead of the bottom, what metal layers could they be on?
+b) Take a note of the orientations of power straps and routing metals. If you were to place pins on the right side of this block instead of the bottom, what metal layers could they be on?
 
 ---
 
@@ -360,6 +360,15 @@ For this question, submit the code for both your ALU module as well as for the t
 ### Checkoff 2: ALU
 
 Demonstrate the functionality of your ALU and testbench.
+
+---
+## Lab Deliverables
+
+### Lab Due: 11:59 PM, 1 week after your lab section.
+
+- Submit your answers electronically to Gradescope
+- Submit your code by pushing to your GitHub repository
+- Checkoff with an ASIC lab TA
 
 ## Acknowledgement
 
