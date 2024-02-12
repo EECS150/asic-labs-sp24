@@ -18,16 +18,13 @@ module gcd_coprocessor #( parameter W = 32 ) (
 
 );
 
-  // You should be able to build this with mostly structural verilog!
+// You should be able to build this with mostly structural verilog!
 
-  // TODO: Define wires
+// Define wires
 
-  // TODO: Instantiate gcd_datapath
-
-  // TODO: Instantiate gcd_control
-
-  // TODO: Instantiate request FIFO
-
-  // TODO: Instantiate response FIFO
+// Instantiate gcd_datapath
+// Instantiate gcd_control
+// Instantiate request FIFO
+// Instantiate response FIFO
 
 endmodule
