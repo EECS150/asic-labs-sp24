@@ -576,7 +576,12 @@ Thought Experiements (UNGRADED):
 
 ### Question 4: ALU
 <ol type="a">
-<li> Submit the code for both your ALU module as well as for the testbench.</li>
+<li> Submit the code for both your ALU module as well as for the testbench. 
+To make the Verilog `include` statements work correctly, add this to the list of VCS options in your sim-rtl YML:<code>
+options: <br>
+&nbsp;  - "+incdir+../../src"
+</code>
+</li>
 </ol>
 
 ## Lab Deliverables
