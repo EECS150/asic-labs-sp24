@@ -531,6 +531,13 @@ Given these definitions, complete `ALU.v` and write a testbench tb `ALU.v` that 
 >
 > &nbsp;
 
+To make the Verilog `include` statements work correctly, add this to the list of VCS options in your sim-rtl YML:
+```
+options:
+- "+incdir+../../src"
+```
+
+---
 
 
 
