@@ -86,7 +86,7 @@ module RAM(q, d, addr, we, clk);
    output [DWIDTH-1:0] q;
    always @(posedge clk)
       if (we) mem[addr] <= d;
-   assign d = mem[addr];
+   assign q = mem[addr];
 endmodule // RAM
 
 /*
