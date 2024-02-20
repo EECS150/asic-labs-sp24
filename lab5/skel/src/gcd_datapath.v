@@ -22,8 +22,8 @@ module gcd_datapath #( parameter W = 16 )
 );
 
 
-reg [W-1:0] A_reg;
-reg [W-1:0] B_reg;
+wire [W-1:0] A_reg;
+wire [W-1:0] B_reg;
 wire [W-1:0] A_next;
 wire [W-1:0] B_next;
 wire [W-1:0] sub_out;
@@ -57,19 +57,20 @@ assign result_bits_data = A_reg;
 
 // Sequential
 // ---------
-always @ (posedge clk) begin
+// always @ (posedge clk or posedge reset) begin
 
-	if(reset) begin
-		A_reg <= 0;
-		B_reg <= 0;
-	end else begin
-		if (A_en) A_reg <= A_next;
-		if (B_en) B_reg <= B_next;
-	end
+// 	if(reset) begin
+// 		A_reg <= 0;
+// 		B_reg <= 0;
+// 	end else begin
+// 		if (A_en) A_reg <= A_next;
+// 		if (B_en) B_reg <= B_next;
+// 	end
 
-end
+// end
 
+REGISTER_R_CE #(.N(W)) A_register (.q(A_reg), .d(A_next), .rst(reset), .ce(A_en), .clk(clk));
+REGISTER_R_CE #(.N(W)) B_register (.q(B_reg), .d(B_next), .rst(reset), .ce(B_en), .clk(clk));
 
 endmodule
-
 

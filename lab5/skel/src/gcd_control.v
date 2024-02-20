@@ -23,7 +23,7 @@ parameter DONE = 2'b11;
 // nextstate must also be declared as a reg because
 // it is reference from the always @* block, even though
 // it isn't actually a register and is only a wire
-reg [1:0] state;
+wire [1:0] state;
 reg [1:0] nextstate;
 
 
@@ -84,7 +84,7 @@ always @* begin
 			// if so, send it, and say that operands are ready
 			// to take new values
       result_val = 1;
-			if (result_rdy) begin
+			if (result_rdy == 1'b1) begin
 				nextstate = IDLE;
 			// if not, stay in this state until the outside is ready for the result
 			end else begin
@@ -100,13 +100,16 @@ end
 
 // Sequential part of design.  At each clock edge, advance to the
 // nextstate (as determined by combinational logic)
-always @(posedge clk) begin
 
-	if(reset)
-		state <= IDLE;
-	else
-		state <= nextstate;
+// always @(posedge clk) begin
 
-end
+// 	if(reset)
+// 		state <= IDLE;
+// 	else
+// 		state <= nextstate;
+
+// end
+
+REGISTER_R #(.N(2), .INIT(IDLE)) state_machine (.q(state), .d(nextstate), .rst(reset), .clk(clk));
 
 endmodule
