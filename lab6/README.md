@@ -285,7 +285,7 @@ ii) Where should the pins on SRAMs be located, if you want to maximize the abili
 
 ## Question 2: Performance and area optimization
 a) Find the maximum clock frequency that gives no timing violations for your design,
-to the nearest 0.2ns.
+to the nearest 0.2ns (slack < 0.2ns).
 Report the final frequency and describe (in English) the critical path.
 Submit output from running `make sim-gl-par` showing that you pass all tests
 using your post-PAR design.
@@ -294,7 +294,7 @@ to match the frequency at which you ran synthesis/PAR.
 
 b) The floorplan we've given you has lots of empty space.
 Adjust the SRAM position and design area bounds to reduce
-the overall area of your design to the nearest 100um.
+the overall area of your design by 1/2. Make sure that your design is still passing timing.
 Report the final area used, and submit a screenshot of your post-PAR layout.
 
 c) How many cycles does your dot product module take for each of the test cases?
