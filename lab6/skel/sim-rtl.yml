@@ -1,0 +1,19 @@
+# RTL Simulation Variables
+sim.inputs:
+  input_files:
+    - "src/dot_product.v"
+    - "src/dot_product_tb.v"
+  # Add more files here for testing if you like
+  timescale: "1ns/10ps"
+  options:
+    - "-notice"
+    - "-line"
+    - "+lint=all,noVCDE"
+    - "+v2k"
+    - "-debug"
+    - "-sverilog"
+    - "-lca"
+  top_module: "dot_product"
+  tb_name: "dot_product_tb"
+  defines: 
+    - "CLOCK_PERIOD=5.00"

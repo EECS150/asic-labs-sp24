@@ -1,0 +1,32 @@
+# Post-PAR Gate-Level Simulation Variables
+sim.inputs:
+  input_files:
+    - "src/dot_product_tb.v"
+  input_files_meta: append
+  level: "gl"
+  timing_annotated: true
+  saif:
+    mode: "full"
+  timescale: "1ns/10ps"
+  options:
+    - "-notice"
+    - "-line"
+    - "+lint=all"
+    - "+v2k"
+    - "-debug"
+    - "+vcs+lic+wait"
+    - "+udpsched"
+    - "+neg_tchk"
+    - "+sdfverbose"
+    - "-negdelay"
+    - "+evalorder"
+    - "-sverilog"
+    - "-lca"
+  top_module: "dot_product"
+  tb_name: "dot_product_tb"
+  defines: 
+    - "CLOCK_PERIOD=20.00"
+
+power.inputs:
+  database: "build/par-rundir/dot_product_FINAL"
+  tb_name: "dot_product_tb"

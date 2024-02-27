@@ -1,0 +1,28 @@
+# Post-Synthesis Gate-Level Simulation Variables
+sim.inputs:
+  input_files:
+    - "src/dot_product_tb.v"
+  input_files_meta: append
+  level: "gl"
+  timing_annotated: true
+  timescale: "1ns/10ps"
+  options:
+    - "-notice"
+    - "-line"
+    - "+lint=all"
+    - "+v2k"
+    - "-debug"
+    - "+vcs+lic+wait"
+    - "+udpsched"
+    - "+neg_tchk"
+    - "+sdfverbose"
+    - "-negdelay"
+    - "+evalorder"
+    - "-sverilog"
+    - "-lca"
+  top_module: "dot_product"
+  tb_name: "dot_product_tb"
+  defines: 
+    - "CLOCK_PERIOD=20.00"
+    - "FUNCTIONAL"
+    - "UNIT_DELAY=#1"

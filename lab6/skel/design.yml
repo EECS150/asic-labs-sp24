@@ -1,0 +1,55 @@
+# Specify Global Variables
+dot.clockPeriod: &CLK_PERIOD "20.0ns"
+dot.verilogSrc: &VERILOG_SRC
+  - "src/dot_product.v"
+  # Add more source files here if you like
+
+# Specify clock signals
+vlsi.inputs.clocks: [
+  {name: "clk", period: *CLK_PERIOD, uncertainty: "0.1ns"}
+]
+
+# If you want to syn/par a different module, replace synthesis.inputs.top_module
+
+# Synthesis Constraints
+synthesis.inputs:
+  top_module: "dot_product"
+  input_files: *VERILOG_SRC
+
+# Placement Constraints
+vlsi.inputs.placement_constraints:
+  - path: "dot_product"
+    type: toplevel
+    x: 0
+    y: 0
+    width:  600
+    height: 600
+    margins:
+      left:   0
+      right:  0
+      top:    0
+      bottom: 0
+
+  - path: "dot_product/sram"
+    type: hardmacro
+    x: 50
+    y: 50
+    width: 279.45
+    height: 269.21
+    orientation: my90
+    top_layer: M3
+  - path: "dot_product/place_obs_bottom"
+    type: obstruction
+    obs_types: ["place"]
+    x: 0
+    y: 0
+    width: 100
+    height: 1.08 # 1 core site tall, necessary to avoid shorts
+
+# Pin placement constraints
+vlsi.inputs.pin_mode: generated
+vlsi.inputs.pin.generate_mode: semi_auto
+vlsi.inputs.pin.assignments: [
+  {pins: "*", layers: ["met2", "met4"], side: "bottom"}
+]
+
