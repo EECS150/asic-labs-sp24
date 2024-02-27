@@ -88,7 +88,7 @@ Hard macros are delivered a GDS and/or a collection of specific files containing
 [GDS](https://www.artwork.com/gdsii/gdsii/) files encode the entire detailed layout of macro. This file is an output product of PAR. A macro's GDS layouts are merged with the PAR’d layout to integrate the PAR'd layout of the rest of the design before running DRC, LVS, and sending the design off to the fabrication house.
 
 #### Liberty Timing Files (*.lib)
-[Liberty](http://web.engr.uky.edu/~elias/lectures/LibertyFileIntroduction.pdf) files
+[Liberty](https://redirect.cs.umbc.edu/~cpatel2/links/641/slides/lect05_LIB.pdf) files
 must be generated for macros at every relevant process, voltage, and temperature (PVT) corner
 that you are using for setup and hold timing analysis.
 Detailed models contain descriptions of what each pin does,
@@ -98,7 +98,7 @@ There are also 3 types of Liberty files:
 which tradeoff accuracy with tool runtime.
 
 #### Library Exchange Format (*.lef)
-[LEF](http://web.engr.uky.edu/~elias/lectures/LibertyFileIntroduction.pdf) files
+[LEF](https://redirect.cs.umbc.edu/~cpatel2/links/641/slides/lect04_LEF.pdf) files
 must be generated for macros in order to denote where pins are located and encode
 any obstructions (places where the PAR tool cannot place other cells or routing).
 Incorrect or inaccurate LEFs can often confuse PAR tools, making them produce
