@@ -281,7 +281,7 @@ i) In Sky130, there are only 5 metal layers, but realistically only 4 layers to 
 *How many layers should a well-designed SRAM macro use (i.e. block off from PAR routing), at maximum?
 
 ii) Where should the pins on SRAMs be located, if you want to maximize the ability for them to abut together?
- vggju 78
+
 
 ## Question 2: Performance and area optimization
 a) Find the maximum clock frequency that gives no timing violations for your design,
