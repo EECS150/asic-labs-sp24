@@ -1,4 +1,4 @@
-# ASIC Lab 6: SRAM Integration, DRC, LVS
+# ASIC Lab 6: Macros (SRAM Integration)
 <p align="center">
 Prof. John Wawrzynek
 </p>
