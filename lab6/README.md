@@ -98,7 +98,7 @@ There are also 3 types of Liberty files:
 which tradeoff accuracy with tool runtime.
 
 #### Library Exchange Format (*.lef)
-[LEF](https://redirect.cs.umbc.edu/~cpatel2/links/641/slides/lect04_LEF.pdf) files
+[LEF](https://www.ispd.cc/contests/18/lefdefref.pdf) files
 must be generated for macros in order to denote where pins are located and encode
 any obstructions (places where the PAR tool cannot place other cells or routing).
 Incorrect or inaccurate LEFs can often confuse PAR tools, making them produce
