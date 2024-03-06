@@ -258,7 +258,7 @@ b) Look at one of the SRAM Verilog model (*.v) files.
 Based on the model, what happens to the `dout` port when a write operation is performed?
 Note that other SRAM designs may have different behavior.
 
-c) Open one of the SRAM layout (`*.gds`) or abstract (`*.lef`) files.
+c) Open one of the SRAM abstract (`*.lef`) files.
 Where are the pins located? Which layer are they on?
 What layer are the power straps on?
 
